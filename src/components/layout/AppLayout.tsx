@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -16,7 +16,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Home, FileText, History, MessageCircle } from "lucide-react";
 
 export function AppLayout() {
