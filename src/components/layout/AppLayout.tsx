@@ -30,6 +30,11 @@ import {
   HelpCircle, 
   BellRing,
   Menu,
+  LayoutDashboard,
+  Gauge,
+  Clock,
+  BookUser,
+  Cog,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,7 +70,9 @@ const AppLayoutContent = () => {
 
   // Helper for NavLink className
   const getNavClass = ({ isActive }: { isActive: boolean }) => {
-    return isActive ? "font-medium text-sidebar-primary" : "text-sidebar-foreground/70 hover:text-sidebar-foreground/90";
+    return isActive 
+      ? "font-medium text-sidebar-primary bg-sidebar-accent/80 rounded-md" 
+      : "text-sidebar-foreground/70 hover:text-sidebar-foreground/90 hover:bg-sidebar-accent/40 rounded-md";
   };
 
   return (
@@ -78,7 +85,7 @@ const AppLayoutContent = () => {
             transition={{ duration: 0.5 }}
             className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
           >
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2 flex-shrink-0">
+            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2 flex-shrink-0">
               <span className="text-white font-bold text-lg">F</span>
             </div>
             {!isCollapsed && (
@@ -92,7 +99,7 @@ const AppLayoutContent = () => {
 
         <SidebarContent className="overflow-hidden px-2">
           {!isCollapsed && (
-            <div className="pb-2">
+            <div className="pb-3">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -112,10 +119,10 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/")} 
                     tooltip="Dashboard" 
-                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/" className={getNavClass}>
-                      <Home className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      <LayoutDashboard className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                       {!isCollapsed && <span>Dashboard</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -125,10 +132,10 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/about")} 
                     tooltip="About" 
-                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/about" className={getNavClass}>
-                      <FileText className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      <FileText className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                       {!isCollapsed && <span>About</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -138,10 +145,10 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/history")} 
                     tooltip="History" 
-                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/history" className={getNavClass}>
-                      <History className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      <Clock className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                       {!isCollapsed && <span>History</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -151,10 +158,10 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/developers")} 
                     tooltip="Developers" 
-                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/developers" className={getNavClass}>
-                      <Users className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      <BookUser className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                       {!isCollapsed && <span>Developers</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -172,10 +179,10 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/settings")} 
                     tooltip="Settings" 
-                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/settings" className={getNavClass}>
-                      <Settings className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      <Cog className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                       {!isCollapsed && <span>Settings</span>}
                     </NavLink>
                   </SidebarMenuButton>
@@ -183,9 +190,9 @@ const AppLayoutContent = () => {
                 <SidebarMenuItem>
                   <SidebarMenuButton 
                     tooltip="Help" 
-                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
-                    <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                    <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
                     {!isCollapsed && <span>Help</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -206,7 +213,7 @@ const AppLayoutContent = () => {
                   <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
                     <Avatar className="h-8 w-8 flex-shrink-0">
                       <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
-                        {USER.name.split(' ').map(n => n[0]).join('')}
+                        AJ
                       </AvatarFallback>
                     </Avatar>
                     {!isCollapsed && (
