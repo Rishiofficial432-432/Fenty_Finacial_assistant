@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavLink } from "react-router-dom";
@@ -43,6 +44,8 @@ const USER = {
 export function AppLayout() {
   const location = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
 
   // Helper to determine if the route is active
   const isRouteActive = (path: string) => location.pathname === path;
@@ -61,60 +64,64 @@ export function AppLayout() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex items-center"
+              className="flex items-center overflow-hidden"
             >
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2 flex-shrink-0">
                 <span className="text-white font-bold text-lg">F</span>
               </div>
-              <span className="text-xl font-bold purple-gradient-text">Fenty</span>
+              {!isCollapsed && (
+                <span className="text-xl font-bold purple-gradient-text truncate">Fenty</span>
+              )}
             </motion.div>
-            <SidebarTrigger />
+            <SidebarTrigger className="flex-shrink-0" />
           </SidebarHeader>
 
-          <SidebarContent>
-            <div className="px-2 pb-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Quick search..."
-                  className="pl-8 h-9 bg-sidebar-accent/50 border-sidebar-border focus-visible:ring-sidebar-ring"
-                />
+          <SidebarContent className="overflow-hidden">
+            {!isCollapsed && (
+              <div className="px-2 pb-2">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Quick search..."
+                    className="pl-8 h-9 bg-sidebar-accent/50 border-sidebar-border focus-visible:ring-sidebar-ring"
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
             <SidebarGroup>
-              <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+              {!isCollapsed && <SidebarGroupLabel>Navigation</SidebarGroupLabel>}
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isRouteActive("/")} tooltip="Dashboard">
+                    <SidebarMenuButton asChild isActive={isRouteActive("/")} tooltip="Dashboard" className={isCollapsed ? "justify-center px-0" : ""}>
                       <NavLink to="/" className={getNavClass}>
-                        <Home className="mr-2 h-4 w-4" />
-                        <span>Dashboard</span>
+                        <Home className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                        {!isCollapsed && <span>Dashboard</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isRouteActive("/about")} tooltip="About">
+                    <SidebarMenuButton asChild isActive={isRouteActive("/about")} tooltip="About" className={isCollapsed ? "justify-center px-0" : ""}>
                       <NavLink to="/about" className={getNavClass}>
-                        <FileText className="mr-2 h-4 w-4" />
-                        <span>About</span>
+                        <FileText className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                        {!isCollapsed && <span>About</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isRouteActive("/history")} tooltip="History">
+                    <SidebarMenuButton asChild isActive={isRouteActive("/history")} tooltip="History" className={isCollapsed ? "justify-center px-0" : ""}>
                       <NavLink to="/history" className={getNavClass}>
-                        <History className="mr-2 h-4 w-4" />
-                        <span>History</span>
+                        <History className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                        {!isCollapsed && <span>History</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isRouteActive("/reports")} tooltip="Reports & Chat">
+                    <SidebarMenuButton asChild isActive={isRouteActive("/reports")} tooltip="Reports & Chat" className={isCollapsed ? "justify-center px-0" : ""}>
                       <NavLink to="/reports" className={getNavClass}>
-                        <MessageCircle className="mr-2 h-4 w-4" />
-                        <span>Reports & Chat</span>
+                        <MessageCircle className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                        {!isCollapsed && <span>Reports & Chat</span>}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -123,25 +130,25 @@ export function AppLayout() {
             </SidebarGroup>
 
             <SidebarGroup>
-              <SidebarGroupLabel>Settings</SidebarGroupLabel>
+              {!isCollapsed && <SidebarGroupLabel>Settings</SidebarGroupLabel>}
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton tooltip="Account">
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Account</span>
+                    <SidebarMenuButton tooltip="Account" className={isCollapsed ? "justify-center px-0" : ""}>
+                      <User className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      {!isCollapsed && <span>Account</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton tooltip="Settings">
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
+                    <SidebarMenuButton tooltip="Settings" className={isCollapsed ? "justify-center px-0" : ""}>
+                      <Settings className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      {!isCollapsed && <span>Settings</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton tooltip="Help">
-                      <HelpCircle className="mr-2 h-4 w-4" />
-                      <span>Help</span>
+                    <SidebarMenuButton tooltip="Help" className={isCollapsed ? "justify-center px-0" : ""}>
+                      <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      {!isCollapsed && <span>Help</span>}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </SidebarMenu>
@@ -150,26 +157,30 @@ export function AppLayout() {
           </SidebarContent>
 
           <SidebarFooter>
-            <div className="px-2 pb-2">
+            <div className={`px-2 pb-2 ${isCollapsed ? "flex justify-center" : ""}`}>
               <ThemeToggle />
             </div>
             
             <div className="p-2 mt-auto">
-              <div className="flex items-center p-2 rounded-md bg-sidebar-accent/50">
+              <div className={`flex items-center p-2 rounded-md bg-sidebar-accent/50 ${isCollapsed ? "justify-center" : ""}`}>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="p-0 h-auto hover:bg-transparent flex items-center gap-2 w-full justify-start">
-                      <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center overflow-hidden">
+                    <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
+                      <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center overflow-hidden flex-shrink-0">
                         <img src={USER.avatar} alt={USER.name} className="w-full h-full object-cover" />
                       </div>
-                      <div className="text-left flex-1 overflow-hidden">
-                        <p className="text-xs font-medium truncate">{USER.name}</p>
-                        <p className="text-xs text-muted-foreground truncate">{USER.role}</p>
-                      </div>
-                      <ChevronDown className="h-4 w-4 opacity-50" />
+                      {!isCollapsed && (
+                        <>
+                          <div className="text-left flex-1 overflow-hidden">
+                            <p className="text-xs font-medium truncate">{USER.name}</p>
+                            <p className="text-xs text-muted-foreground truncate">{USER.role}</p>
+                          </div>
+                          <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0" />
+                        </>
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuContent align={isCollapsed ? "center" : "end"} side={isCollapsed ? "right" : "bottom"} className="w-56">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Profile</DropdownMenuItem>
