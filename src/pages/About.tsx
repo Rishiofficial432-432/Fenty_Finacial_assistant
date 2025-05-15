@@ -37,6 +37,7 @@ const itemVariants = {
 export default function About() {
   const showNotification = () => {
     toast({
+      id: "welcome-toast",
       title: "Welcome to Fenty Analytics",
       description: "Thanks for exploring our platform features!",
       variant: "info",

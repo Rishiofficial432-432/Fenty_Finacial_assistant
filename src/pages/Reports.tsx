@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -116,7 +115,9 @@ export default function Reports() {
       
       setMessages(prev => [...prev, aiMessage]);
       
+      // Fix the toast call by adding an id
       toast({
+        id: "analysis-complete-" + Date.now(),
         title: "Analysis Complete",
         description: "AI has analyzed your request and provided insights.",
       });

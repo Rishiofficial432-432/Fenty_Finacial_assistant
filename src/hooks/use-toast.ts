@@ -1,10 +1,11 @@
 
-import { toast as sonnerToast, type ToastT } from "sonner";
+import { toast as sonnerToast } from "sonner";
 
-export type ToastProps = ToastT & {
+export type ToastProps = {
   title?: string;
   description?: string;
   variant?: "default" | "destructive" | "success" | "warning" | "info";
+  id?: string;
 };
 
 const variantStyles = {
@@ -30,11 +31,18 @@ export function toast(props: ToastProps) {
   const { title, description, variant = "default", ...rest } = props;
   const variantStyle = variantStyles[variant] || variantStyles.default;
 
-  return sonnerToast(title, {
+  return sonnerToast(title || "", {
     description,
+    id: props.id || String(Date.now()),
     ...variantStyle,
     ...rest,
   });
 }
 
-export { toast as useToast } from "sonner";
+// Creating a hook-like interface for compatibility with the existing code
+export const useToast = () => {
+  return {
+    toast,
+    toasts: [],
+  };
+};

@@ -280,7 +280,6 @@ export default function Dashboard() {
                     >
                       <RadialBar
                         background
-                        clockWise
                         dataKey="value"
                         animationDuration={1000}
                       />
