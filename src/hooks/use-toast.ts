@@ -10,20 +10,19 @@ export type ToastProps = {
 
 const variantStyles = {
   default: {
-    className: "group border-border bg-background text-foreground",
+    className: "bg-background border-border",
   },
   destructive: {
-    className:
-      "group border-destructive bg-destructive text-destructive-foreground",
+    className: "destructive text-destructive-foreground",
   },
   success: {
-    className: "group border-green-500 bg-green-500/90 text-white",
+    className: "bg-green-500 text-white border-green-600",
   },
   warning: {
-    className: "group border-yellow-500 bg-yellow-500/90 text-white",
+    className: "bg-yellow-500 text-white border-yellow-600",
   },
   info: {
-    className: "group border-purple-500 bg-purple-500/90 text-white",
+    className: "bg-blue-500 text-white border-blue-600",
   },
 };
 
@@ -39,10 +38,11 @@ export function toast(props: ToastProps) {
   });
 }
 
-// Creating a hook-like interface for compatibility with the existing code
 export const useToast = () => {
   return {
     toast,
+    // Provide an empty array to fix the 'map' error
     toasts: [],
+    dismiss: () => {},
   };
 };

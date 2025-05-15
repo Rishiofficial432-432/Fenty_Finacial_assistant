@@ -117,7 +117,7 @@ export default function Reports() {
       
       // Fix the toast call by adding an id
       toast({
-        id: "analysis-complete-" + Date.now(),
+        id: `analysis-complete-${Date.now()}`,
         title: "Analysis Complete",
         description: "AI has analyzed your request and provided insights.",
       });
