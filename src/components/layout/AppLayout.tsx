@@ -16,6 +16,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { LOGO_PATH } from "@/assets/paths";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavLink } from "react-router-dom";
 import { 
@@ -23,13 +24,12 @@ import {
   FileText, 
   History, 
   Users, 
-  PanelLeft, 
-  BellRing, 
-  User, 
   Settings, 
   ChevronDown, 
   Search, 
-  HelpCircle 
+  HelpCircle, 
+  BellRing,
+  Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,12 +71,12 @@ const AppLayoutContent = () => {
   return (
     <div className="flex min-h-svh w-full">
       <Sidebar variant="sidebar" collapsible="icon" side="left" className="border-r border-sidebar-border shadow-soft">
-        <SidebarHeader className="flex items-center justify-between px-2 py-3">
+        <SidebarHeader className="flex items-center px-3 py-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`flex items-center overflow-hidden ${isCollapsed ? "mx-auto" : ""}`}
+            className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
           >
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2 flex-shrink-0">
               <span className="text-white font-bold text-lg">F</span>
@@ -85,7 +85,9 @@ const AppLayoutContent = () => {
               <span className="text-xl font-bold purple-gradient-text truncate">Fenty</span>
             )}
           </motion.div>
-          <SidebarTrigger className={`flex-shrink-0 ${isCollapsed ? "hidden" : ""}`} />
+          <SidebarTrigger className={`ml-auto flex-shrink-0 ${isCollapsed ? "hidden" : ""}`}>
+            <Menu className="h-4 w-4" />
+          </SidebarTrigger>
         </SidebarHeader>
 
         <SidebarContent className="overflow-hidden px-2">
@@ -102,7 +104,7 @@ const AppLayoutContent = () => {
           )}
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel>Navigation</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left">Navigation</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -110,7 +112,7 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/")} 
                     tooltip="Dashboard" 
-                    className={isCollapsed ? "justify-center px-0" : ""}
+                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <NavLink to="/" className={getNavClass}>
                       <Home className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
@@ -123,7 +125,7 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/about")} 
                     tooltip="About" 
-                    className={isCollapsed ? "justify-center px-0" : ""}
+                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <NavLink to="/about" className={getNavClass}>
                       <FileText className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
@@ -136,7 +138,7 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/history")} 
                     tooltip="History" 
-                    className={isCollapsed ? "justify-center px-0" : ""}
+                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <NavLink to="/history" className={getNavClass}>
                       <History className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
@@ -149,7 +151,7 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/developers")} 
                     tooltip="Developers" 
-                    className={isCollapsed ? "justify-center px-0" : ""}
+                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <NavLink to="/developers" className={getNavClass}>
                       <Users className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
@@ -162,7 +164,7 @@ const AppLayoutContent = () => {
           </SidebarGroup>
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel>Settings</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left">Settings</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -170,7 +172,7 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/settings")} 
                     tooltip="Settings" 
-                    className={isCollapsed ? "justify-center px-0" : ""}
+                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <NavLink to="/settings" className={getNavClass}>
                       <Settings className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
@@ -181,7 +183,7 @@ const AppLayoutContent = () => {
                 <SidebarMenuItem>
                   <SidebarMenuButton 
                     tooltip="Help" 
-                    className={isCollapsed ? "justify-center px-0" : ""}
+                    className={`text-left ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
                     {!isCollapsed && <span>Help</span>}
@@ -238,10 +240,12 @@ const AppLayoutContent = () => {
       </Sidebar>
 
       <main className="flex flex-1 flex-col overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-border/40 h-14 px-4">
+        <div className="flex items-center justify-between border-b border-border/40 h-14 px-4 bg-background rounded-tr-xl">
           <div className="flex items-center gap-2">
             {isCollapsed && (
-              <SidebarTrigger className="h-8 w-8 md:hidden" />
+              <SidebarTrigger className="h-8 w-8">
+                <Menu className="h-4 w-4" />
+              </SidebarTrigger>
             )}
             <nav className="hidden md:flex">
               <ol className="flex items-center gap-1 text-sm">

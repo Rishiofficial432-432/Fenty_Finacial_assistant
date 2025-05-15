@@ -1,180 +1,263 @@
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
-};
+import { Switch } from "@/components/ui/switch";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Settings as SettingsIcon } from "lucide-react";
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState("general");
-  const [darkMode, setDarkMode] = useState(true);
-  const [notifications, setNotifications] = useState(true);
-  const [dataSharing, setDataSharing] = useState(false);
-  const [apiKey, setApiKey] = useState("sk-api-key-example-12345");
-  
-  const handleSave = () => {
-    toast({
-      title: "Settings saved",
-      description: "Your preferences have been updated successfully.",
-    });
-  };
-
   return (
     <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      <motion.div variants={itemVariants}>
+      <div>
         <h1 className="text-3xl font-bold tracking-tight purple-gradient-text">Settings</h1>
-        <p className="text-muted-foreground">Manage your account preferences and application settings</p>
-      </motion.div>
+        <p className="text-muted-foreground">Manage your account settings and preferences.</p>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="appearance">Appearance</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="api">API Keys</TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="profile" className="w-full">
+        <TabsList className="mb-6">
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="appearance">Appearance</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="general" className="mt-0">
-            <Card className="shadow-soft border-border/40">
-              <CardHeader>
-                <CardTitle>General Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Data Sharing</h3>
-                    <p className="text-sm text-muted-foreground">Allow anonymous usage data collection</p>
-                  </div>
-                  <Switch checked={dataSharing} onCheckedChange={setDataSharing} />
+        <TabsContent value="profile" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Profile Information</CardTitle>
+              <CardDescription>Update your profile details and personal information.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className="flex flex-col items-center space-y-2">
+                  <Avatar className="h-24 w-24">
+                    <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-3xl">
+                      AJ
+                    </AvatarFallback>
+                  </Avatar>
+                  <Button variant="outline" size="sm">Change Avatar</Button>
                 </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Language</h3>
-                    <p className="text-sm text-muted-foreground">Select your preferred language</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                  <div className="space-y-2">
+                    <Label htmlFor="first-name">First name</Label>
+                    <Input id="first-name" defaultValue="Alex" />
                   </div>
-                  <select className="border rounded-md p-2">
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                  </select>
+                  <div className="space-y-2">
+                    <Label htmlFor="last-name">Last name</Label>
+                    <Input id="last-name" defaultValue="Johnson" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email address</Label>
+                    <Input id="email" defaultValue="alex.johnson@example.com" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="role">Role</Label>
+                    <Input id="role" defaultValue="Administrator" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="company">Company</Label>
+                    <Input id="company" defaultValue="Fenty Analytics" />
+                  </div>
                 </div>
+              </div>
+              
+              <div className="flex justify-end">
+                <Button>Save Changes</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
+        <TabsContent value="account" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Account Settings</CardTitle>
+              <CardDescription>Update your account settings and preferences.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Security</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="current-password">Current password</Label>
+                    <Input id="current-password" type="password" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="new-password">New password</Label>
+                    <Input id="new-password" type="password" />
+                  </div>
+                </div>
                 <div className="flex justify-end">
-                  <Button onClick={handleSave}>Save Changes</Button>
+                  <Button variant="outline">Change Password</Button>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="appearance" className="mt-0">
-            <Card className="shadow-soft border-border/40">
-              <CardHeader>
-                <CardTitle>Appearance Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Two-factor Authentication</h3>
                 <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Dark Mode</h3>
-                    <p className="text-sm text-muted-foreground">Toggle between light and dark mode</p>
+                  <div className="space-y-1">
+                    <p>Protect your account with two-factor authentication</p>
+                    <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
                   </div>
-                  <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+                  <Switch defaultChecked />
                 </div>
-
-                <div className="flex justify-end">
-                  <Button onClick={handleSave}>Save Changes</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="notifications" className="mt-0">
-            <Card className="shadow-soft border-border/40">
-              <CardHeader>
-                <CardTitle>Notification Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Email Notifications</h3>
-                    <p className="text-sm text-muted-foreground">Receive email alerts about system updates</p>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium text-destructive">Danger Zone</h3>
+                <div className="flex items-center justify-between border border-destructive/20 p-4 rounded-lg">
+                  <div className="space-y-1">
+                    <p>Delete Account</p>
+                    <p className="text-sm text-muted-foreground">Permanently delete your account and all data</p>
                   </div>
-                  <Switch checked={notifications} onCheckedChange={setNotifications} />
+                  <Button variant="destructive">Delete Account</Button>
                 </div>
-
-                <div className="flex justify-end">
-                  <Button onClick={handleSave}>Save Changes</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="api" className="mt-0">
-            <Card className="shadow-soft border-border/40">
-              <CardHeader>
-                <CardTitle>API Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <Label htmlFor="api-key">API Key</Label>
-                  <div className="flex mt-2">
-                    <Input
-                      id="api-key"
-                      value={apiKey}
-                      onChange={(e) => setApiKey(e.target.value)}
-                      type="password"
-                      className="flex-1"
-                    />
-                    <Button variant="outline" className="ml-2" onClick={() => navigator.clipboard.writeText(apiKey)}>
-                      Copy
-                    </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="appearance" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <SettingsIcon className="h-5 w-5" />
+                Appearance Settings
+              </CardTitle>
+              <CardDescription>Customize how your dashboard looks and feels</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Theme Preferences</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Dark Mode</p>
+                      <p className="text-sm text-muted-foreground">Switch between light and dark themes</p>
+                    </div>
+                    <Switch />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    Keep this key secure. Do not share it with others.
-                  </p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Use System Theme</p>
+                      <p className="text-sm text-muted-foreground">Follow your system's theme settings</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Animations</p>
+                      <p className="text-sm text-muted-foreground">Enable animations throughout the interface</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
                 </div>
-
-                <div className="flex justify-end">
-                  <Button onClick={handleSave}>Save Changes</Button>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Layout Settings</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Compact Mode</p>
+                      <p className="text-sm text-muted-foreground">Use a more compact interface layout</p>
+                    </div>
+                    <Switch />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Sidebar Auto-Collapse</p>
+                      <p className="text-sm text-muted-foreground">Automatically collapse sidebar on small screens</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </motion.div>
+              </div>
+              
+              <div className="flex justify-end">
+                <Button>Save Preferences</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="notifications" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Notification Preferences</CardTitle>
+              <CardDescription>Manage how you want to be notified</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Email Notifications</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Financial Reports</p>
+                      <p className="text-sm text-muted-foreground">Receive emails when new reports are available</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Account Activity</p>
+                      <p className="text-sm text-muted-foreground">Get notified about important account activities</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Newsletter</p>
+                      <p className="text-sm text-muted-foreground">Receive our monthly newsletter</p>
+                    </div>
+                    <Switch />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">System Notifications</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Browser Notifications</p>
+                      <p className="text-sm text-muted-foreground">Show notifications in your browser</p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p>Sound Alerts</p>
+                      <p className="text-sm text-muted-foreground">Play sound for important notifications</p>
+                    </div>
+                    <Switch />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex justify-end">
+                <Button>Save Notification Settings</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </motion.div>
   );
 }
