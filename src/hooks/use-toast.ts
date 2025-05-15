@@ -1,7 +1,7 @@
 
-import { toast as sonnerToast, type Toast } from "sonner";
+import { toast as sonnerToast, type ToastT } from "sonner";
 
-export type ToastProps = Toast & {
+export type ToastProps = ToastT & {
   title?: string;
   description?: string;
   variant?: "default" | "destructive" | "success" | "warning" | "info";
@@ -37,4 +37,4 @@ export function toast(props: ToastProps) {
   });
 }
 
-export { useToast } from "sonner";
+export { toast as useToast } from "sonner";

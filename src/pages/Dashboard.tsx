@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -280,7 +279,6 @@ export default function Dashboard() {
                       data={performanceData}
                     >
                       <RadialBar
-                        minAngle={15}
                         background
                         clockWise
                         dataKey="value"
