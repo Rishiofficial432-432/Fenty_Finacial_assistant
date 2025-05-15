@@ -1,12 +1,16 @@
+
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { PieChart, Pie, AreaChart, Area, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, Cell } from "recharts";
+import { PieChart, Pie, AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, Cell } from "recharts";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChartLine, PieChart as PieChartIcon, BarChart3, LineChart as LineChartIcon, Download, Filter, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import { ChatInterface } from "@/components/dashboard/ChatInterface";
+import { FileUploader } from "@/components/dashboard/FileUploader";
+import { ReportTemplates } from "@/components/dashboard/ReportTemplates";
 
 // Sample data for charts
 const pieData = [
@@ -109,10 +113,17 @@ const KpiCard = ({ title, value, change, icon }: { title: string; value: string;
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [chatTab, setChatTab] = useState("charts");
   const [refresh, setRefresh] = useState(0);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleRefresh = () => {
     setRefresh((prev) => prev + 1);
+  };
+
+  const handleFileUpload = (file: File) => {
+    setUploadedFile(file);
+    setChatTab("chat");
   };
 
   return (
@@ -146,30 +157,141 @@ export default function Dashboard() {
       </div>
       
       <motion.div variants={cardVariants} className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <KpiCard
-          title="Total Assets"
-          value="$1,245,600"
-          change={{ value: "8.2%", positive: true }}
-          icon={<ChartLine className="h-4 w-4" />}
-        />
-        <KpiCard
-          title="Monthly Income"
-          value="$24,350"
-          change={{ value: "3.1%", positive: true }}
-          icon={<BarChart3 className="h-4 w-4" />}
-        />
-        <KpiCard
-          title="Expenses"
-          value="$12,780"
-          change={{ value: "2.4%", positive: false }}
-          icon={<PieChartIcon className="h-4 w-4" />}
-        />
-        <KpiCard
-          title="ROI"
-          value="18.6%"
-          change={{ value: "5.3%", positive: true }}
-          icon={<LineChartIcon className="h-4 w-4" />}
-        />
+        <Card className="overflow-hidden border-border/40 hover-scale shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-sm text-muted-foreground">Total Assets</CardTitle>
+              <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-500">
+                <ChartLine className="h-4 w-4" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold">$1,245,600</div>
+                <div className="text-xs flex items-center mt-1 text-green-500">
+                  ↑ 8.2%
+                </div>
+              </div>
+              <div className="h-8 w-16">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timeData.slice(-4)}>
+                    <Line 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#10b981" 
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="overflow-hidden border-border/40 hover-scale shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-sm text-muted-foreground">Monthly Income</CardTitle>
+              <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-500">
+                <BarChart3 className="h-4 w-4" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold">$24,350</div>
+                <div className="text-xs flex items-center mt-1 text-green-500">
+                  ↑ 3.1%
+                </div>
+              </div>
+              <div className="h-8 w-16">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timeData.slice(-4)}>
+                    <Line 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#10b981" 
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="overflow-hidden border-border/40 hover-scale shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-sm text-muted-foreground">Expenses</CardTitle>
+              <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-500">
+                <PieChartIcon className="h-4 w-4" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold">$12,780</div>
+                <div className="text-xs flex items-center mt-1 text-red-500">
+                  ↓ 2.4%
+                </div>
+              </div>
+              <div className="h-8 w-16">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timeData.slice(-4)}>
+                    <Line 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#ef4444" 
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="overflow-hidden border-border/40 hover-scale shadow-soft">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-center">
+              <CardTitle className="text-sm text-muted-foreground">ROI</CardTitle>
+              <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/20 text-purple-500">
+                <LineChartIcon className="h-4 w-4" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold">18.6%</div>
+                <div className="text-xs flex items-center mt-1 text-green-500">
+                  ↑ 5.3%
+                </div>
+              </div>
+              <div className="h-8 w-16">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timeData.slice(-4)}>
+                    <Line 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke="#10b981" 
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
       
       <motion.div variants={cardVariants}>
@@ -178,7 +300,7 @@ export default function Dashboard() {
             <TabsList className="mb-4">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="investments">Investments</TabsTrigger>
-              <TabsTrigger value="expenses">Expenses</TabsTrigger>
+              <TabsTrigger value="chat">Chat & Reports</TabsTrigger>
             </TabsList>
             
             <div className="flex items-center gap-4">
@@ -190,7 +312,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-            
+          
           <TabsContent value="overview" className="mt-0">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               <Card className="overflow-hidden shadow-soft hover-lift border-border/40">
@@ -354,21 +476,33 @@ export default function Dashboard() {
             </Card>
           </TabsContent>
           
-          <TabsContent value="expenses">
-            <Card className="shadow-soft border-border/40">
-              <CardHeader>
-                <CardTitle>Expense Analysis</CardTitle>
-                <CardDescription>
-                  Monthly expense breakdown and categories
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Expense data is being loaded. This tab would show detailed expense tracking,
-                  category breakdown, and suggestions for cost optimization.
-                </p>
-              </CardContent>
-            </Card>
+          <TabsContent value="chat">
+            <div className="grid md:grid-cols-4 gap-6 flex-1">
+              <div className="md:col-span-3">
+                <Tabs 
+                  value={chatTab} 
+                  onValueChange={setChatTab} 
+                  className="w-full mb-4"
+                >
+                  <TabsList>
+                    <TabsTrigger value="chat">Chat</TabsTrigger>
+                    <TabsTrigger value="data">Upload Data</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="chat" className="mt-4">
+                    <ChatInterface uploadedFile={uploadedFile} />
+                  </TabsContent>
+                  
+                  <TabsContent value="data" className="mt-4">
+                    <FileUploader onFileUpload={handleFileUpload} />
+                  </TabsContent>
+                </Tabs>
+              </div>
+              
+              <div>
+                <ReportTemplates />
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </motion.div>

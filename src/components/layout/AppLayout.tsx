@@ -18,7 +18,19 @@ import {
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavLink } from "react-router-dom";
-import { Home, FileText, History, MessageCircle, PanelLeft, BellRing, User, Settings, ChevronDown, Search, HelpCircle } from "lucide-react";
+import { 
+  Home, 
+  FileText, 
+  History, 
+  Users, 
+  PanelLeft, 
+  BellRing, 
+  User, 
+  Settings, 
+  ChevronDown, 
+  Search, 
+  HelpCircle 
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -30,6 +42,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 
 // Define version number and user data
@@ -38,7 +51,6 @@ const USER = {
   name: "Alex Johnson",
   email: "alex.johnson@example.com",
   role: "Administrator",
-  avatar: "https://i.pravatar.cc/300"
 };
 
 // Separate the inner content into its own component, which can safely use useSidebar
@@ -59,12 +71,12 @@ const AppLayoutContent = () => {
   return (
     <div className="flex min-h-svh w-full">
       <Sidebar variant="sidebar" collapsible="icon" side="left" className="border-r border-sidebar-border shadow-soft">
-        <SidebarHeader className="flex items-center justify-between">
+        <SidebarHeader className="flex items-center justify-between px-2 py-3">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center overflow-hidden"
+            className={`flex items-center overflow-hidden ${isCollapsed ? "mx-auto" : ""}`}
           >
             <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2 flex-shrink-0">
               <span className="text-white font-bold text-lg">F</span>
@@ -73,12 +85,12 @@ const AppLayoutContent = () => {
               <span className="text-xl font-bold purple-gradient-text truncate">Fenty</span>
             )}
           </motion.div>
-          <SidebarTrigger className="flex-shrink-0" />
+          <SidebarTrigger className={`flex-shrink-0 ${isCollapsed ? "hidden" : ""}`} />
         </SidebarHeader>
 
-        <SidebarContent className="overflow-hidden">
+        <SidebarContent className="overflow-hidden px-2">
           {!isCollapsed && (
-            <div className="px-2 pb-2">
+            <div className="pb-2">
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -94,7 +106,12 @@ const AppLayoutContent = () => {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isRouteActive("/")} tooltip="Dashboard" className={isCollapsed ? "justify-center px-0" : ""}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isRouteActive("/")} 
+                    tooltip="Dashboard" 
+                    className={isCollapsed ? "justify-center px-0" : ""}
+                  >
                     <NavLink to="/" className={getNavClass}>
                       <Home className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
                       {!isCollapsed && <span>Dashboard</span>}
@@ -102,7 +119,12 @@ const AppLayoutContent = () => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isRouteActive("/about")} tooltip="About" className={isCollapsed ? "justify-center px-0" : ""}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isRouteActive("/about")} 
+                    tooltip="About" 
+                    className={isCollapsed ? "justify-center px-0" : ""}
+                  >
                     <NavLink to="/about" className={getNavClass}>
                       <FileText className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
                       {!isCollapsed && <span>About</span>}
@@ -110,7 +132,12 @@ const AppLayoutContent = () => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isRouteActive("/history")} tooltip="History" className={isCollapsed ? "justify-center px-0" : ""}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isRouteActive("/history")} 
+                    tooltip="History" 
+                    className={isCollapsed ? "justify-center px-0" : ""}
+                  >
                     <NavLink to="/history" className={getNavClass}>
                       <History className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
                       {!isCollapsed && <span>History</span>}
@@ -118,10 +145,15 @@ const AppLayoutContent = () => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isRouteActive("/reports")} tooltip="Reports & Chat" className={isCollapsed ? "justify-center px-0" : ""}>
-                    <NavLink to="/reports" className={getNavClass}>
-                      <MessageCircle className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
-                      {!isCollapsed && <span>Reports & Chat</span>}
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isRouteActive("/developers")} 
+                    tooltip="Developers" 
+                    className={isCollapsed ? "justify-center px-0" : ""}
+                  >
+                    <NavLink to="/developers" className={getNavClass}>
+                      <Users className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      {!isCollapsed && <span>Developers</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -134,19 +166,23 @@ const AppLayoutContent = () => {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton tooltip="Account" className={isCollapsed ? "justify-center px-0" : ""}>
-                    <User className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
-                    {!isCollapsed && <span>Account</span>}
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isRouteActive("/settings")} 
+                    tooltip="Settings" 
+                    className={isCollapsed ? "justify-center px-0" : ""}
+                  >
+                    <NavLink to="/settings" className={getNavClass}>
+                      <Settings className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
+                      {!isCollapsed && <span>Settings</span>}
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
-                  <SidebarMenuButton tooltip="Settings" className={isCollapsed ? "justify-center px-0" : ""}>
-                    <Settings className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
-                    {!isCollapsed && <span>Settings</span>}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton tooltip="Help" className={isCollapsed ? "justify-center px-0" : ""}>
+                  <SidebarMenuButton 
+                    tooltip="Help" 
+                    className={isCollapsed ? "justify-center px-0" : ""}
+                  >
                     <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-2"} h-4 w-4`} />
                     {!isCollapsed && <span>Help</span>}
                   </SidebarMenuButton>
@@ -166,9 +202,11 @@ const AppLayoutContent = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
-                    <div className="h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center overflow-hidden flex-shrink-0">
-                      <img src={USER.avatar} alt={USER.name} className="w-full h-full object-cover" />
-                    </div>
+                    <Avatar className="h-8 w-8 flex-shrink-0">
+                      <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
+                        {USER.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
                     {!isCollapsed && (
                       <>
                         <div className="text-left flex-1 overflow-hidden">
@@ -202,9 +240,9 @@ const AppLayoutContent = () => {
       <main className="flex flex-1 flex-col overflow-y-auto">
         <div className="flex items-center justify-between border-b border-border/40 h-14 px-4">
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="md:hidden h-8 w-8">
-              <PanelLeft className="h-4 w-4" />
-            </Button>
+            {isCollapsed && (
+              <SidebarTrigger className="h-8 w-8 md:hidden" />
+            )}
             <nav className="hidden md:flex">
               <ol className="flex items-center gap-1 text-sm">
                 <li>
