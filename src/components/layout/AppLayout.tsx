@@ -20,18 +20,14 @@ import { LOGO_PATH } from "@/assets/paths";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NavLink } from "react-router-dom";
 import { 
-  Home, 
   FileText, 
   History, 
-  Users, 
-  Settings, 
   ChevronDown, 
   Search, 
   HelpCircle, 
   BellRing,
   Menu,
   LayoutDashboard,
-  Gauge,
   Clock,
   BookUser,
   Cog,
@@ -71,13 +67,21 @@ const AppLayoutContent = () => {
   // Helper for NavLink className
   const getNavClass = ({ isActive }: { isActive: boolean }) => {
     return isActive 
-      ? "font-medium text-sidebar-primary bg-sidebar-accent/80 rounded-md" 
-      : "text-sidebar-foreground/70 hover:text-sidebar-foreground/90 hover:bg-sidebar-accent/40 rounded-md";
+      ? "font-medium text-sidebar-primary-foreground bg-sidebar-accent rounded-md" 
+      : "text-sidebar-foreground hover:text-sidebar-primary-foreground hover:bg-sidebar-accent/40 rounded-md";
   };
 
   return (
     <div className="flex min-h-svh w-full">
-      <Sidebar variant="sidebar" collapsible="icon" side="left" className="border-r border-sidebar-border shadow-soft">
+      <Sidebar 
+        variant="sidebar" 
+        collapsible="icon" 
+        side="left" 
+        className="border-r border-sidebar-border shadow-soft rounded-r-3xl overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, #1A1F2C 0%, #262D40 100%)",
+        }}
+      >
         <SidebarHeader className="flex items-center px-3 py-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -85,14 +89,14 @@ const AppLayoutContent = () => {
             transition={{ duration: 0.5 }}
             className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
           >
-            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mr-2 flex-shrink-0">
-              <span className="text-white font-bold text-lg">F</span>
+            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center mr-2 flex-shrink-0">
+              <span className="text-white font-bold text-lg">A</span>
             </div>
             {!isCollapsed && (
-              <span className="text-xl font-bold purple-gradient-text truncate">Fenty</span>
+              <span className="text-xl font-bold text-gradient">Aveion</span>
             )}
           </motion.div>
-          <SidebarTrigger className={`ml-auto flex-shrink-0 ${isCollapsed ? "hidden" : ""}`}>
+          <SidebarTrigger className={`ml-auto flex-shrink-0 text-white hover:text-purple-300 ${isCollapsed ? "hidden" : ""}`}>
             <Menu className="h-4 w-4" />
           </SidebarTrigger>
         </SidebarHeader>
@@ -101,17 +105,17 @@ const AppLayoutContent = () => {
           {!isCollapsed && (
             <div className="pb-3">
               <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-sidebar-foreground/70" />
                 <Input
                   placeholder="Quick search..."
-                  className="pl-8 h-9 bg-sidebar-accent/50 border-sidebar-border focus-visible:ring-sidebar-ring"
+                  className="pl-8 h-9 bg-sidebar-accent/20 border-sidebar-border/30 focus-visible:ring-sidebar-primary text-sidebar-foreground"
                 />
               </div>
             </div>
           )}
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel className="text-left">Navigation</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left text-sidebar-foreground/70">Navigation</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -171,7 +175,7 @@ const AppLayoutContent = () => {
           </SidebarGroup>
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel className="text-left">Settings</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left text-sidebar-foreground/70">Settings</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -207,22 +211,22 @@ const AppLayoutContent = () => {
           </div>
           
           <div className="p-2 mt-auto">
-            <div className={`flex items-center p-2 rounded-md bg-sidebar-accent/50 ${isCollapsed ? "justify-center" : ""}`}>
+            <div className={`flex items-center p-2 rounded-md bg-sidebar-accent/20 ${isCollapsed ? "justify-center" : ""}`}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
                     <Avatar className="h-8 w-8 flex-shrink-0">
-                      <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
+                      <AvatarFallback className="bg-purple-500/20 text-purple-200">
                         AJ
                       </AvatarFallback>
                     </Avatar>
                     {!isCollapsed && (
                       <>
                         <div className="text-left flex-1 overflow-hidden">
-                          <p className="text-xs font-medium truncate">{USER.name}</p>
-                          <p className="text-xs text-muted-foreground truncate">{USER.role}</p>
+                          <p className="text-xs font-medium truncate text-sidebar-foreground">{USER.name}</p>
+                          <p className="text-xs text-sidebar-foreground/70 truncate">{USER.role}</p>
                         </div>
-                        <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0" />
+                        <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 text-sidebar-foreground" />
                       </>
                     )}
                   </Button>
@@ -247,10 +251,10 @@ const AppLayoutContent = () => {
       </Sidebar>
 
       <main className="flex flex-1 flex-col overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-border/40 h-14 px-4 bg-background rounded-tr-xl">
+        <div className="flex items-center justify-between border-b border-border/40 h-14 px-4 bg-background rounded-tl-3xl">
           <div className="flex items-center gap-2">
             {isCollapsed && (
-              <SidebarTrigger className="h-8 w-8">
+              <SidebarTrigger className="h-8 w-8 text-foreground hover:text-purple-500">
                 <Menu className="h-4 w-4" />
               </SidebarTrigger>
             )}
@@ -309,7 +313,7 @@ const AppLayoutContent = () => {
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input 
-                placeholder="Search across Fenty Analytics..."
+                placeholder="Search across Aveion AI..."
                 className="pl-9 pr-9" 
                 autoFocus
               />

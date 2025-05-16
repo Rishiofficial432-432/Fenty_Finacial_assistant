@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -32,6 +32,7 @@ interface Developer {
   name: string;
   role: string;
   bio: string;
+  imagePath?: string;
   initials: string;
   skills: string[];
   social: {
@@ -44,41 +45,44 @@ interface Developer {
 
 const developers: Developer[] = [
   {
-    name: "Alex Johnson",
-    role: "Lead Developer",
-    bio: "Full-stack developer with 8 years of experience specializing in React and data visualization. Passionate about creating intuitive user interfaces and meaningful data representations.",
-    initials: "AJ",
-    skills: ["React", "TypeScript", "Data Visualization", "UI/UX", "API Integration"],
+    name: "Smit",
+    role: "Full Stack Developer & Founder",
+    bio: "Founder and leader of Aveion AI. Full-stack developer specializing in creating innovative solutions and leading teams to build cutting-edge applications.",
+    imagePath: "/lovable-uploads/cc34679d-36d4-4f76-a99d-dce7d50cfaca.png",
+    initials: "S",
+    skills: ["React", "TypeScript", "Node.js", "AI Integration", "Team Leadership"],
     social: {
-      github: "https://github.com/alexjohnson",
-      linkedin: "https://linkedin.com/in/alexjohnson",
-      twitter: "https://twitter.com/alexjohnson",
-      email: "alex@fenty.com"
+      github: "https://github.com/smitaveion",
+      linkedin: "https://linkedin.com/in/smitaveion",
+      twitter: "https://twitter.com/smitaveion",
+      email: "smit@aveion.ai"
     }
   },
   {
-    name: "Taylor Rivera",
-    role: "UI/UX Designer",
-    bio: "Creative designer with a focus on user experience and accessibility. Blends artistic vision with technical understanding to create beautiful, functional interfaces.",
-    initials: "TR",
-    skills: ["UI Design", "UX Research", "Wireframing", "Prototyping", "Design Systems"],
+    name: "Ankita Sharma",
+    role: "Head of Creative Department & Senior UI/UX Designer",
+    bio: "Leading the creative vision with innovative design thinking. Creates beautiful, intuitive user experiences that blend artistry with functionality.",
+    imagePath: "/lovable-uploads/5b7ca514-45fe-4add-b1be-f18bcc910da1.png",
+    initials: "AS",
+    skills: ["UI Design", "UX Research", "Visual Design", "Prototyping", "Design Systems"],
     social: {
-      github: "https://github.com/taylorrivera",
-      linkedin: "https://linkedin.com/in/taylorrivera",
-      email: "taylor@fenty.com"
+      github: "https://github.com/ankitasharma",
+      linkedin: "https://linkedin.com/in/ankitasharma",
+      email: "ankita@aveion.ai"
     }
   },
   {
-    name: "Jordan Chen",
-    role: "Data Scientist",
-    bio: "Data scientist specializing in analytics and machine learning. Creates powerful algorithms to transform complex data into actionable insights for business growth.",
-    initials: "JC",
-    skills: ["Machine Learning", "Data Analytics", "Python", "Statistical Modeling", "Data Engineering"],
+    name: "Tanmay Parmar",
+    role: "Cybersecurity Expert & Full Stack Developer",
+    bio: "Security specialist with extensive knowledge in protecting digital assets. Combines security expertise with full-stack development skills to build robust applications.",
+    imagePath: "/lovable-uploads/74032efd-a039-4b8e-8397-48960c90036e.png",
+    initials: "TP",
+    skills: ["Cybersecurity", "Penetration Testing", "React", "Node.js", "Security Architecture"],
     social: {
-      github: "https://github.com/jordanchen",
-      linkedin: "https://linkedin.com/in/jordanchen",
-      twitter: "https://twitter.com/jordanchen",
-      email: "jordan@fenty.com"
+      github: "https://github.com/tanmayparmar",
+      linkedin: "https://linkedin.com/in/tanmayparmar",
+      twitter: "https://twitter.com/tanmayparmar",
+      email: "tanmay@aveion.ai"
     }
   }
 ];
@@ -94,7 +98,7 @@ export default function Developers() {
       <motion.div variants={cardVariants}>
         <h1 className="text-3xl font-bold tracking-tight purple-gradient-text">Meet Our Team</h1>
         <p className="text-muted-foreground mt-2">
-          The talented developers behind Fenty Analytics, creating powerful tools to transform your data into insights.
+          The talented developers behind Aveion AI, creating powerful tools to transform your data into insights.
         </p>
       </motion.div>
 
@@ -114,6 +118,9 @@ export default function Developers() {
                     <CardDescription>{developer.role}</CardDescription>
                   </div>
                   <Avatar className="h-14 w-14 flex-shrink-0">
+                    {developer.imagePath ? (
+                      <AvatarImage src={developer.imagePath} alt={developer.name} />
+                    ) : null}
                     <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-lg">
                       {developer.initials}
                     </AvatarFallback>
@@ -169,7 +176,7 @@ export default function Developers() {
         <Card className="border-border/40 shadow-soft">
           <CardHeader>
             <CardTitle>About Our Development Process</CardTitle>
-            <CardDescription>How we work together to build Fenty Analytics</CardDescription>
+            <CardDescription>How we work together to build Aveion AI</CardDescription>
           </CardHeader>
           <CardContent>
             <p>

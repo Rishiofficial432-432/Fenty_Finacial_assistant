@@ -1,20 +1,24 @@
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer } from "@/components/ui/chart";
-import { RefreshCw } from "lucide-react";
-import React, { ReactNode } from "react";
+import React, { ReactElement } from 'react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
-interface ChartCardProps {
+export interface ChartCardProps {
   title: string;
   description: string;
-  icon: ReactNode;
-  children: ReactNode;
-  config: any;
+  icon: ReactElement;
+  children: ReactElement;
   height?: string;
-  lastUpdated?: string;
-  onRefresh?: () => void;
+  config?: any;
+  className?: string;
+  onOptionSelect?: (option: string) => void;
 }
 
 export const ChartCard = ({
@@ -22,41 +26,47 @@ export const ChartCard = ({
   description,
   icon,
   children,
+  height = 'h-[300px]',
   config,
-  height = "300px",
-  lastUpdated = "Today, 4:30 PM",
-  onRefresh
+  className = '',
+  onOptionSelect,
 }: ChartCardProps) => {
   return (
-    <Card className="overflow-hidden shadow-soft hover-lift border-border/40">
-      <CardHeader className="pb-1">
-        <div className="flex items-center justify-between">
+    <Card className={`border-border/40 shadow-soft overflow-hidden ${className}`}>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div className="flex items-center gap-2">
+          <span className="rounded-md bg-primary/10 p-2 text-primary dark:bg-primary/20">
+            {icon}
+          </span>
           <div>
-            <CardTitle className="text-lg flex items-center gap-2">
-              {icon}
-              {title}
-            </CardTitle>
+            <CardTitle className="text-base">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </div>
-          <Badge variant="outline">Interactive</Badge>
         </div>
+        
+        {onOptionSelect && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <ChevronDown className="h-4 w-4" />
+                <span className="sr-only">Show options</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onOptionSelect('week')}>
+                This Week
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onOptionSelect('month')}>
+                This Month
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onOptionSelect('year')}>
+                This Year
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </CardHeader>
-      <CardContent className="p-6">
-        <ChartContainer config={config} className={`h-[${height}]`}>
-          {children}
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="bg-muted/20 border-t py-2 px-6 flex justify-between items-center">
-        <span className="text-xs text-muted-foreground">Last updated: {lastUpdated}</span>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="h-7 gap-1 text-xs"
-          onClick={onRefresh}
-        >
-          <RefreshCw className="h-3 w-3" /> Update
-        </Button>
-      </CardFooter>
+      <CardContent className={`${height} px-2`}>{children}</CardContent>
     </Card>
   );
 };

@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 273 80% 66%;
+    --primary: 261 80% 66%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -23,7 +23,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 272 76% 56%;
+    --accent: 262 76% 56%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -31,18 +31,18 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 273 80% 66%;
+    --ring: 261 80% 66%;
 
     --radius: 1rem;
 
-    --sidebar-background: 270 100% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 272 76% 56%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 268 94% 96%;
-    --sidebar-accent-foreground: 272 72% 47%;
-    --sidebar-border: 268 90% 92%;
-    --sidebar-ring: 272 82% 76%;
+    --sidebar-background: 224 23% 15%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 255 80% 75%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 261 40% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 265 30% 30%;
+    --sidebar-ring: 261 82% 76%;
   }
 
   .dark {
@@ -55,7 +55,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 272 82% 76%;
+    --primary: 261 82% 76%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -64,7 +64,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 273 80% 66%;
+    --accent: 261 80% 66%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -72,16 +72,16 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 272 82% 76%;
+    --ring: 261 82% 76%;
     
-    --sidebar-background: 274 64% 20%;
-    --sidebar-foreground: 270 100% 98%;
-    --sidebar-primary: 272 82% 76%;
+    --sidebar-background: 224 23% 15%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 261 82% 76%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 273 67% 39%;
-    --sidebar-accent-foreground: 270 100% 98%;
-    --sidebar-border: 272 72% 47%;
-    --sidebar-ring: 272 82% 76%;
+    --sidebar-accent: 261 40% 45%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 265 30% 30%;
+    --sidebar-ring: 261 82% 76%;
   }
 }
 
@@ -146,6 +146,10 @@
   
   .hover-lift {
     @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg;
+  }
+  
+  .navbar-gradient {
+    background: linear-gradient(135deg, #1A1F2C 0%, #262D40 100%);
   }
 }
 

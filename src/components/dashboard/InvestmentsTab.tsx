@@ -1,102 +1,187 @@
 
+import { useState } from "react";
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer, 
+  Cell,
+  PieChart,
+  Pie,
+  LineChart,
+  Line
+} from "recharts";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Building, Briefcase, PieChart as PieChartIcon, Clock, RefreshCw, BarChart3, DollarSign } from "lucide-react";
+import { BarChart3, PieChart as PieChartIcon, LineChart as LineChartIcon, ArrowUpRight, FileText } from "lucide-react";
+import { ChartContainer } from "@/components/ui/chart";
+import { ChartCard } from "./ChartCard";
+import { investmentData, allocationData, historicalData } from "./ChartData";
 
-// Import custom Home icon
-import { Home } from "../icons/Home";
+// Animation variants
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
+const barColors = ["#8b5cf6", "#a78bfa", "#c4b5fd", "#ddd6fe"];
+const pieColors = ["#8b5cf6", "#ec4899", "#f43f5e", "#06b6d4", "#14b8a6", "#22c55e"];
 
 export const InvestmentsTab = () => {
+  const [returnsPeriod, setReturnsPeriod] = useState("month");
+  const [allocationView, setAllocationView] = useState("sector");
+  
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-      <div className="md:col-span-2">
-        <Card className="overflow-hidden shadow-soft hover-lift border-border/40">
-          <CardHeader>
-            <CardTitle>Investment Portfolio</CardTitle>
-            <CardDescription>
-              Top performing assets in your portfolio
-            </CardDescription>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <motion.div
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          className="lg:col-span-2"
+        >
+          <ChartCard
+            title="Investment Returns"
+            description={`Performance for this ${returnsPeriod}`}
+            icon={<BarChart3 className="h-4 w-4" />}
+            onOptionSelect={setReturnsPeriod}
+            className="h-full"
+          >
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={investmentData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip
+                  contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: '8px', border: 'none' }}
+                  itemStyle={{ color: '#fff' }}
+                  labelStyle={{ color: '#fff' }}
+                />
+                <Legend />
+                <Bar dataKey="return" fill="#8b5cf6" radius={[4, 4, 0, 0]}>
+                  {investmentData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={barColors[index % barColors.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartCard>
+        </motion.div>
+        
+        <motion.div variants={cardVariants} initial="hidden" animate="visible">
+          <ChartCard
+            title="Asset Allocation"
+            description={`By ${allocationView}`}
+            icon={<PieChartIcon className="h-4 w-4" />}
+            onOptionSelect={setAllocationView}
+            className="h-full"
+          >
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={allocationData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  nameKey="name"
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                >
+                  {allocationData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value, name) => [`${value}%`, name]}
+                  contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: '8px', border: 'none' }}
+                  itemStyle={{ color: '#fff' }}
+                  labelStyle={{ color: '#fff' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </ChartCard>
+        </motion.div>
+      </div>
+      
+      <motion.div variants={cardVariants} initial="hidden" animate="visible" className="w-full">
+        <ChartCard
+          title="Historical Performance"
+          description="5-year investment growth"
+          icon={<LineChartIcon className="h-4 w-4" />}
+          height="h-[350px]"
+          className="h-full"
+        >
+          <ResponsiveContainer width="100%" height={350}>
+            <LineChart
+              data={historicalData}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip
+                contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.7)', borderRadius: '8px', border: 'none' }}
+                itemStyle={{ color: '#fff' }}
+                labelStyle={{ color: '#fff' }}
+              />
+              <Legend />
+              <Line type="monotone" dataKey="stocks" stroke="#8b5cf6" activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="bonds" stroke="#ec4899" />
+              <Line type="monotone" dataKey="cash" stroke="#06b6d4" />
+              <Line type="monotone" dataKey="total" stroke="#22c55e" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </ChartCard>
+      </motion.div>
+      
+      <motion.div variants={cardVariants} initial="hidden" animate="visible">
+        <Card className="border-border/40 shadow-soft">
+          <CardHeader className="flex flex-row items-center gap-4">
+            <div className="rounded-md bg-primary/10 p-2.5">
+              <FileText className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <CardTitle>Investment Documents</CardTitle>
+              <CardDescription>Access your reports and statements</CardDescription>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[
-                { name: "Amazon (AMZN)", type: "Stock", value: "$128,450", change: "+12.4%", sector: "Technology" },
-                { name: "Apple (AAPL)", type: "Stock", value: "$95,200", change: "+8.7%", sector: "Technology" },
-                { name: "U.S. Treasury Bonds", type: "Bond", value: "$75,000", change: "+3.2%", sector: "Government" },
-                { name: "Vanguard Total Market ETF", type: "ETF", value: "$45,780", change: "+6.8%", sector: "Diversified" },
-                { name: "Real Estate Property", type: "Real Estate", value: "$320,000", change: "+4.5%", sector: "Real Estate" }
-              ].map((asset, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-card/60 hover:bg-card/80 transition-colors border border-border/40">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-md bg-primary/10">
-                      {asset.type === "Stock" && <Building className="h-4 w-4 text-primary" />}
-                      {asset.type === "Bond" && <Briefcase className="h-4 w-4 text-primary" />}
-                      {asset.type === "ETF" && <PieChartIcon className="h-4 w-4 text-primary" />}
-                      {asset.type === "Real Estate" && <Home className="h-4 w-4 text-primary" />}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {['Q1 Performance Report', 'Q2 Performance Report', 'Annual Disclosure', 'Tax Documents'].map((doc) => (
+                  <div key={doc} className="flex items-center justify-between p-3 rounded-lg border border-border/60 hover:bg-accent/5">
+                    <div className="flex items-center gap-3">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <span>{doc}</span>
                     </div>
-                    <div>
-                      <div className="font-medium">{asset.name}</div>
-                      <div className="text-xs text-muted-foreground">{asset.sector}</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-medium">{asset.value}</div>
-                    <div className="text-xs text-green-500">{asset.change}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter className="bg-muted/20 border-t py-2 px-6 flex justify-between items-center">
-            <span className="text-xs text-muted-foreground">Last updated: Today, 4:30 PM</span>
-            <Button size="sm">View All Assets</Button>
-          </CardFooter>
-        </Card>
-      </div>
-      
-      <div>
-        <Card className="overflow-hidden shadow-soft hover-lift border-border/40 h-full">
-          <CardHeader>
-            <CardTitle>Upcoming Events</CardTitle>
-            <CardDescription>Scheduled financial activities</CardDescription>
-          </CardHeader>
-          <CardContent className="px-0">
-            <ScrollArea className="h-[360px]">
-              <div className="space-y-2 px-6">
-                {[
-                  { title: "Dividend Payment", date: "May 18", desc: "AAPL quarterly dividend", icon: <DollarSign className="h-4 w-4" /> },
-                  { title: "Bond Maturity", date: "May 24", desc: "Treasury bond maturity", icon: <Briefcase className="h-4 w-4" /> },
-                  { title: "Portfolio Review", date: "May 30", desc: "Scheduled advisor meeting", icon: <FileText className="h-4 w-4" /> },
-                  { title: "Market Report", date: "June 2", desc: "Q2 market analysis", icon: <BarChart3 className="h-4 w-4" /> },
-                  { title: "Rebalancing", date: "June 10", desc: "Portfolio rebalancing", icon: <RefreshCw className="h-4 w-4" /> },
-                  { title: "Tax Payment", date: "June 15", desc: "Quarterly tax payment due", icon: <DollarSign className="h-4 w-4" /> },
-                ].map((event, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors">
-                    <div className="mt-0.5 p-2 rounded-full bg-primary/10 text-primary">
-                      {event.icon}
-                    </div>
-                    <div>
-                      <div className="font-medium">{event.title}</div>
-                      <div className="text-xs text-muted-foreground">{event.desc}</div>
-                      <div className="flex items-center gap-1 mt-1">
-                        <Clock className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">{event.date}</span>
-                      </div>
-                    </div>
+                    <Button variant="ghost" size="icon">
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Button>
                   </div>
                 ))}
               </div>
-            </ScrollArea>
+            </div>
           </CardContent>
-          <CardFooter className="bg-muted/20 border-t py-2 px-6 flex justify-between items-center">
-            <span className="text-xs text-muted-foreground">Showing next 30 days</span>
-            <Button variant="ghost" size="sm" className="h-7 gap-1 text-xs">
-              <RefreshCw className="h-3 w-3" /> Update
-            </Button>
+          <CardFooter>
+            <Button variant="outline" className="w-full">View All Documents</Button>
           </CardFooter>
         </Card>
-      </div>
+      </motion.div>
     </div>
   );
 };
