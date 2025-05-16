@@ -1,99 +1,85 @@
 
-// Sample data for charts
-export const pieData = [
-  { name: "Stocks", value: 400, color: "#9b87f5" },
-  { name: "Bonds", value: 300, color: "#8B5CF6" },
-  { name: "Cash", value: 200, color: "#0FA0CE" },
-  { name: "Real Estate", value: 100, color: "#ea384c" },
+// Portfolio data
+export const portfolioData = [
+  { date: "Jan", actual: 1000, projected: 900 },
+  { date: "Feb", actual: 1200, projected: 950 },
+  { date: "Mar", actual: 1100, projected: 1000 },
+  { date: "Apr", actual: 1400, projected: 1050 },
+  { date: "May", actual: 1350, projected: 1100 },
+  { date: "Jun", actual: 1500, projected: 1150 },
+  { date: "Jul", actual: 1600, projected: 1200 },
+  { date: "Aug", actual: 1750, projected: 1250 },
+  { date: "Sep", actual: 1850, projected: 1300 },
+  { date: "Oct", actual: 2000, projected: 1350 },
+  { date: "Nov", actual: 2150, projected: 1400 },
+  { date: "Dec", actual: 2300, projected: 1450 }
 ];
 
-export const timeData = [
-  { name: "Jan", value: 4000 },
-  { name: "Feb", value: 3000 },
-  { name: "Mar", value: 5000 },
-  { name: "Apr", value: 2780 },
-  { name: "May", value: 1890 },
-  { name: "Jun", value: 2390 },
-  { name: "Jul", value: 3490 },
-];
-
-export const comparisonData = [
-  { name: "2023", actual: 4000, projected: 2400 },
-  { name: "2024", actual: 3000, projected: 1398 },
-  { name: "2025", actual: 2000, projected: 9800 },
-  { name: "2026", actual: 2780, projected: 3908 },
-  { name: "2027", actual: 1890, projected: 4800 },
-];
-
-export const sectorPerformanceData = [
-  { name: 'Technology', value: 28.5, fill: '#9b87f5' },
-  { name: 'Healthcare', value: 18.2, fill: '#8B5CF6' },
-  { name: 'Finance', value: 15.7, fill: '#7E69AB' },
-  { name: 'Consumer', value: 12.3, fill: '#6E59A5' },
-  { name: 'Energy', value: 9.8, fill: '#0FA0CE' },
-  { name: 'Other', value: 15.5, fill: '#ea384c' },
-];
-
-export const performanceData = [
-  { name: 'ROI', value: 78, fill: '#8B5CF6' },
-  { name: 'Growth', value: 67, fill: '#9b87f5' },
-  { name: 'Yield', value: 85, fill: '#7E69AB' },
-];
-
-export const monthlyIncomeData = [
-  { name: 'Jan', value: 21500 },
-  { name: 'Feb', value: 22700 },
-  { name: 'Mar', value: 24100 },
-  { name: 'Apr', value: 23500 },
-  { name: 'May', value: 24800 },
-  { name: 'Jun', value: 24350 },
-];
-
-export const riskData = [
-  { name: 'Very Low', value: 15 },
-  { name: 'Low', value: 25 },
-  { name: 'Medium', value: 35 },
-  { name: 'High', value: 20 },
-  { name: 'Very High', value: 5 },
-];
-
+// Market data
 export const marketData = [
-  { name: 'Jan', stocks: 4000, bonds: 2400, cash: 2400 },
-  { name: 'Feb', stocks: 3000, bonds: 1398, cash: 2210 },
-  { name: 'Mar', stocks: 2000, bonds: 9800, cash: 2290 },
-  { name: 'Apr', stocks: 2780, bonds: 3908, cash: 2000 },
-  { name: 'May', stocks: 1890, bonds: 4800, cash: 2181 },
-  { name: 'Jun', stocks: 2390, bonds: 3800, cash: 2500 },
-  { name: 'Jul', stocks: 3490, bonds: 4300, cash: 2100 },
+  { date: "Jan", stocks: 100, bonds: 50, crypto: 150 },
+  { date: "Feb", stocks: 120, bonds: 55, crypto: 140 },
+  { date: "Mar", stocks: 110, bonds: 60, crypto: 130 },
+  { date: "Apr", stocks: 140, bonds: 65, crypto: 160 },
+  { date: "May", stocks: 130, bonds: 70, crypto: 180 },
+  { date: "Jun", stocks: 150, bonds: 75, crypto: 170 },
+  { date: "Jul", stocks: 160, bonds: 80, crypto: 190 },
+  { date: "Aug", stocks: 170, bonds: 85, crypto: 210 },
+  { date: "Sep", stocks: 180, bonds: 90, crypto: 230 },
+  { date: "Oct", stocks: 200, bonds: 95, crypto: 250 },
+  { date: "Nov", stocks: 220, bonds: 100, crypto: 270 },
+  { date: "Dec", stocks: 240, bonds: 105, crypto: 290 }
 ];
 
-export const chartConfig = {
-  stocks: { label: "Stocks", theme: { light: "#9b87f5", dark: "#9b87f5" } },
-  bonds: { label: "Bonds", theme: { light: "#8B5CF6", dark: "#8B5CF6" } },
-  cash: { label: "Cash", theme: { light: "#0FA0CE", dark: "#0FA0CE" } },
-  realestate: { label: "Real Estate", theme: { light: "#ea384c", dark: "#ea384c" } },
-  actual: { label: "Actual", theme: { light: "#9b87f5", dark: "#9b87f5" } },
-  projected: { label: "Projected", theme: { light: "#0FA0CE", dark: "#0FA0CE" } },
-};
+// Performance data
+export const performanceData = [
+  { name: "Jan", value: 40, growth: 2.5, target: 45 },
+  { name: "Feb", value: 55, growth: 2.8, target: 50 },
+  { name: "Mar", value: 48, growth: 2.1, target: 55 },
+  { name: "Apr", value: 63, growth: 3.2, target: 60 },
+  { name: "May", value: 59, growth: 3.0, target: 65 },
+  { name: "Jun", value: 71, growth: 3.5, target: 70 }
+];
 
-export const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+// Portfolio allocation
+export const portfolioAllocation = [
+  { name: "Stocks", value: 40 },
+  { name: "Bonds", value: 20 },
+  { name: "Cash", value: 10 },
+  { name: "Real Estate", value: 15 },
+  { name: "Alternatives", value: 15 }
+];
 
-export const cardVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-};
+// Adding missing data for InvestmentsTab
+export const investmentData = [
+  { name: "Jan", returns: 4.5, benchmark: 3.2 },
+  { name: "Feb", returns: 5.1, benchmark: 3.5 },
+  { name: "Mar", returns: 4.8, benchmark: 3.8 },
+  { name: "Apr", returns: 6.2, benchmark: 4.0 },
+  { name: "May", returns: 5.9, benchmark: 4.2 },
+  { name: "Jun", returns: 7.1, benchmark: 4.5 },
+  { name: "Jul", returns: 6.8, benchmark: 4.7 },
+  { name: "Aug", returns: 7.5, benchmark: 5.0 },
+  { name: "Sep", returns: 8.1, benchmark: 5.2 },
+  { name: "Oct", returns: 8.5, benchmark: 5.5 },
+  { name: "Nov", returns: 9.0, benchmark: 5.8 },
+  { name: "Dec", returns: 9.5, benchmark: 6.0 }
+];
+
+export const allocationData = [
+  { name: "Large Cap", value: 30, color: "#8b5cf6" },
+  { name: "Mid Cap", value: 25, color: "#ec4899" },
+  { name: "Small Cap", value: 15, color: "#14b8a6" },
+  { name: "International", value: 20, color: "#0ea5e9" },
+  { name: "Bonds", value: 10, color: "#f59e0b" }
+];
+
+export const historicalData = [
+  { year: "2018", return: 5.2 },
+  { year: "2019", return: 9.5 },
+  { year: "2020", return: -2.1 },
+  { year: "2021", return: 18.4 },
+  { year: "2022", return: -3.5 },
+  { year: "2023", return: 12.8 },
+  { year: "2024", return: 7.6 }
+];

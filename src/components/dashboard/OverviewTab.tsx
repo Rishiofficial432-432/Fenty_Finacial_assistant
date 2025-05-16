@@ -30,6 +30,12 @@ import { ChartLine, PieChart as PieChartIcon, Activity, LineChart as LineChartIc
 import { ChartCard } from "./ChartCard";
 import { portfolioData, marketData, performanceData, portfolioAllocation } from "./ChartData";
 
+// Props interface for OverviewTab
+export interface OverviewTabProps {
+  animateCharts?: boolean;
+  onRefresh?: () => void;
+}
+
 // Animation variants
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -70,13 +76,13 @@ const chartConfig = {
 
 const pieColors = ["#8b5cf6", "#ec4899", "#14b8a6", "#0ea5e9", "#f59e0b"];
 
-export const OverviewTab = () => {
+export const OverviewTab = ({ animateCharts = true, onRefresh = () => {} }: OverviewTabProps) => {
   const [period, setPeriod] = useState("month");
   
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <motion.div variants={cardVariants} initial="hidden" animate="visible" className="lg:col-span-2">
+        <motion.div variants={cardVariants} initial={animateCharts ? "hidden" : "visible"} animate="visible" className="lg:col-span-2">
           <ChartCard 
             title="Performance Overview" 
             description={`Portfolio performance this ${period}`} 
@@ -104,7 +110,7 @@ export const OverviewTab = () => {
           </ChartCard>
         </motion.div>
         
-        <motion.div variants={cardVariants} initial="hidden" animate="visible">
+        <motion.div variants={cardVariants} initial={animateCharts ? "hidden" : "visible"} animate="visible">
           <ChartCard 
             title="Asset Allocation" 
             description="Current portfolio distribution" 

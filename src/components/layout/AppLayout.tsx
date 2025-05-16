@@ -80,16 +80,17 @@ const AppLayoutContent = () => {
         className="border-r border-sidebar-border shadow-soft rounded-r-3xl overflow-hidden"
         style={{
           background: "linear-gradient(135deg, #1A1F2C 0%, #262D40 100%)",
+          width: isCollapsed ? "4rem" : "18rem", // Increased width from 16rem to 18rem
         }}
       >
-        <SidebarHeader className="flex items-center px-3 py-4">
+        <SidebarHeader className="flex items-center px-4 py-4">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
           >
-            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center mr-2 flex-shrink-0">
+            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center mr-3 flex-shrink-0">
               <span className="text-white font-bold text-lg">A</span>
             </div>
             {!isCollapsed && (
@@ -101,21 +102,21 @@ const AppLayoutContent = () => {
           </SidebarTrigger>
         </SidebarHeader>
 
-        <SidebarContent className="overflow-hidden px-2">
+        <SidebarContent className="overflow-hidden px-3">
           {!isCollapsed && (
             <div className="pb-3">
               <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-sidebar-foreground/70" />
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-sidebar-foreground/70" />
                 <Input
                   placeholder="Quick search..."
-                  className="pl-8 h-9 bg-sidebar-accent/20 border-sidebar-border/30 focus-visible:ring-sidebar-primary text-sidebar-foreground"
+                  className="pl-9 h-9 bg-sidebar-accent/20 border-sidebar-border/30 focus-visible:ring-sidebar-primary text-sidebar-foreground"
                 />
               </div>
             </div>
           )}
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel className="text-left text-sidebar-foreground/70">Navigation</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left pl-3 text-sidebar-foreground/70">Navigation</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -175,7 +176,7 @@ const AppLayoutContent = () => {
           </SidebarGroup>
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel className="text-left text-sidebar-foreground/70">Settings</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left pl-3 text-sidebar-foreground/70">Settings</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -206,15 +207,15 @@ const AppLayoutContent = () => {
         </SidebarContent>
 
         <SidebarFooter>
-          <div className={`px-2 pb-2 ${isCollapsed ? "flex justify-center" : ""}`}>
+          <div className={`px-3 pb-2 ${isCollapsed ? "flex justify-center" : ""}`}>
             <ThemeToggle />
           </div>
           
-          <div className="p-2 mt-auto">
+          <div className="p-3 mt-auto">
             <div className={`flex items-center p-2 rounded-md bg-sidebar-accent/20 ${isCollapsed ? "justify-center" : ""}`}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
+                  <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-3"}`}>
                     <Avatar className="h-8 w-8 flex-shrink-0">
                       <AvatarFallback className="bg-purple-500/20 text-purple-200">
                         AJ
