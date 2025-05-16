@@ -80,7 +80,7 @@ const AppLayoutContent = () => {
         className="border-r border-sidebar-border shadow-soft rounded-r-3xl overflow-hidden"
         style={{
           background: "linear-gradient(135deg, #1A1F2C 0%, #262D40 100%)",
-          width: isCollapsed ? "4rem" : "18rem", // Increased width from 16rem to 18rem
+          width: isCollapsed ? "5rem" : "20rem", // Increased width from 18rem to 20rem
         }}
       >
         <SidebarHeader className="flex items-center px-4 py-4">
@@ -88,9 +88,9 @@ const AppLayoutContent = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
+            className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full pl-0" : "justify-start"}`}
           >
-            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center mr-3 flex-shrink-0">
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center mr-3 flex-shrink-0">
               <span className="text-white font-bold text-lg">A</span>
             </div>
             {!isCollapsed && (

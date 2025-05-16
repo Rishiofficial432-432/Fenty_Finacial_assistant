@@ -83,3 +83,35 @@ export const historicalData = [
   { year: "2023", return: 12.8 },
   { year: "2024", return: 7.6 }
 ];
+
+// Add the missing exports to fix the build errors
+export const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
+export const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+export const monthlyIncomeData = [
+  { month: "Jan", income: 4500 },
+  { month: "Feb", income: 4800 },
+  { month: "Mar", income: 5200 },
+  { month: "Apr", income: 5000 },
+  { month: "May", income: 5600 },
+  { month: "Jun", income: 5800 }
+];

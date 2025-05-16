@@ -102,7 +102,7 @@ export default function Developers() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
         {developers.map((developer, index) => (
           <motion.div
             key={developer.name}
@@ -111,25 +111,25 @@ export default function Developers() {
             className="h-full"
           >
             <Card className="h-full hover-scale border-border/40 shadow-soft flex flex-col">
-              <CardHeader className="pb-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-xl">{developer.name}</CardTitle>
-                    <CardDescription>{developer.role}</CardDescription>
-                  </div>
-                  <Avatar className="h-14 w-14 flex-shrink-0">
+              <CardHeader className="pb-2">
+                <div className="flex flex-col items-center">
+                  <Avatar className="h-32 w-32 mb-4">
                     {developer.imagePath ? (
-                      <AvatarImage src={developer.imagePath} alt={developer.name} />
+                      <AvatarImage src={developer.imagePath} alt={developer.name} className="object-cover" />
                     ) : null}
-                    <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-lg">
+                    <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-4xl">
                       {developer.initials}
                     </AvatarFallback>
                   </Avatar>
+                  <div className="text-center">
+                    <CardTitle className="text-2xl">{developer.name}</CardTitle>
+                    <CardDescription className="text-md mt-1">{developer.role}</CardDescription>
+                  </div>
                 </div>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground mb-4">{developer.bio}</p>
-                <div className="flex flex-wrap gap-2 mt-3">
+              <CardContent className="flex-grow text-center px-6">
+                <p className="text-muted-foreground mb-6">{developer.bio}</p>
+                <div className="flex flex-wrap gap-2 justify-center mt-4">
                   {developer.skills.map((skill) => (
                     <Badge key={skill} variant="secondary" className="font-normal">
                       {skill}
@@ -137,32 +137,32 @@ export default function Developers() {
                   ))}
                 </div>
               </CardContent>
-              <CardFooter className="flex gap-2 border-t pt-4">
+              <CardFooter className="flex justify-center gap-3 border-t pt-4">
                 {developer.social.github && (
-                  <Button variant="ghost" size="icon" asChild className="h-8 w-8">
+                  <Button variant="ghost" size="icon" asChild className="h-10 w-10">
                     <a href={developer.social.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4" />
+                      <Github className="h-5 w-5" />
                     </a>
                   </Button>
                 )}
                 {developer.social.linkedin && (
-                  <Button variant="ghost" size="icon" asChild className="h-8 w-8">
+                  <Button variant="ghost" size="icon" asChild className="h-10 w-10">
                     <a href={developer.social.linkedin} target="_blank" rel="noopener noreferrer">
-                      <Linkedin className="h-4 w-4" />
+                      <Linkedin className="h-5 w-5" />
                     </a>
                   </Button>
                 )}
                 {developer.social.twitter && (
-                  <Button variant="ghost" size="icon" asChild className="h-8 w-8">
+                  <Button variant="ghost" size="icon" asChild className="h-10 w-10">
                     <a href={developer.social.twitter} target="_blank" rel="noopener noreferrer">
-                      <Twitter className="h-4 w-4" />
+                      <Twitter className="h-5 w-5" />
                     </a>
                   </Button>
                 )}
                 {developer.social.email && (
-                  <Button variant="ghost" size="icon" asChild className="h-8 w-8">
+                  <Button variant="ghost" size="icon" asChild className="h-10 w-10">
                     <a href={`mailto:${developer.social.email}`}>
-                      <Mail className="h-4 w-4" />
+                      <Mail className="h-5 w-5" />
                     </a>
                   </Button>
                 )}
