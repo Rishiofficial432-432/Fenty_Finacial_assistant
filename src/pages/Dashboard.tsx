@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -232,7 +231,7 @@ export default function Dashboard() {
             <span>Export</span>
           </Button>
           <Button size="sm" onClick={handleRefresh} className="flex items-center gap-2 hover-lift">
-            <RefreshCw className="h-4 w-4" className={refresh > 0 ? "animate-spin" : ""} />
+            <RefreshCw className={`h-4 w-4 ${refresh > 0 ? "animate-spin" : ""}`} />
             <span>Refresh</span>
           </Button>
         </motion.div>
