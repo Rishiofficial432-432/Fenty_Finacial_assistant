@@ -59,6 +59,7 @@ export const ChartCard = ({
               size="icon" 
               className="h-7 w-7 flex-shrink-0"
               onClick={onDownload}
+              title="Download chart data"
             >
               <Download className="h-3.5 w-3.5" />
               <span className="sr-only">Download chart data</span>

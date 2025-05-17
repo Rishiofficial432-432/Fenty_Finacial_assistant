@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, LineChart, BarChart, PieChart, FileJson, FileText } from "lucide-react";
+import { Send, LineChart, BarChart, PieChart, FileJson } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { 
   LineChart as RechartsLineChart, 
@@ -93,22 +93,27 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
       const rows = text.split('\n');
       const headers = rows[0].split(',').map(header => header.trim());
       
-      const parsedRows = rows.slice(1).map(row => {
-        const values = row.split(',');
-        const rowData: Record<string, any> = {};
-        
-        headers.forEach((header, index) => {
-          // Try to convert to number if possible
-          const value = values[index]?.trim();
-          const numValue = Number(value);
-          rowData[header] = isNaN(numValue) ? value : numValue;
-        });
-        
-        return rowData;
-      }).filter(row => Object.values(row).some(value => value !== undefined && value !== ''));
+      const parsedRows = rows.slice(1)
+        .filter(row => row.trim() !== '')
+        .map(row => {
+          const values = row.split(',');
+          const rowData: Record<string, any> = {};
+          
+          headers.forEach((header, index) => {
+            // Try to convert to number if possible
+            const value = values[index]?.trim();
+            const numValue = Number(value);
+            rowData[header] = isNaN(numValue) ? value : numValue;
+          });
+          
+          return rowData;
+        }).filter(row => Object.values(row).some(value => value !== undefined && value !== ''));
       
       setParsedData(parsedRows);
       setDataColumns(headers);
+      
+      console.log("Parsed data:", parsedRows);
+      console.log("Columns:", headers);
       
       return { data: parsedRows, columns: headers };
     } catch (error) {
@@ -128,17 +133,25 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
       const processFile = async () => {
         const { data, columns } = await parseCSVData(uploadedFile);
         
-        const columnsList = columns.join(', ');
-        const rowCount = data.length;
-        
-        const fileMessage: MessageType = {
-          id: `system-${Date.now()}`,
-          sender: "ai",
-          content: `I've analyzed your uploaded file "${uploadedFile.name}" containing ${rowCount} rows of data with the following columns: ${columnsList}. What insights would you like to see from this data?`,
-          timestamp: new Date(),
-        };
-        
-        setMessages(prev => [...prev, fileMessage]);
+        if (data.length > 0) {
+          const columnsList = columns.join(', ');
+          const rowCount = data.length;
+          
+          const fileMessage: MessageType = {
+            id: `system-${Date.now()}`,
+            sender: "ai",
+            content: `I've analyzed your uploaded file "${uploadedFile.name}" containing ${rowCount} rows of data with the following columns: ${columnsList}. What insights would you like to see from this data?`,
+            timestamp: new Date(),
+          };
+          
+          setMessages(prev => [...prev, fileMessage]);
+        } else {
+          toast({
+            title: "Invalid data format",
+            description: "The uploaded file doesn't contain valid data. Please check the format and try again.",
+            variant: "destructive",
+          });
+        }
       };
       
       processFile();
@@ -150,6 +163,9 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
     if (!data || data.length === 0) {
       return null;
     }
+    
+    console.log("Generating chart from query:", query);
+    console.log("Data sample:", data.slice(0, 2));
     
     // Simple logic to determine chart type and columns to use
     const queryLower = query.toLowerCase();
@@ -180,7 +196,8 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
     
     // Try to find columns mentioned in the query
     dataColumns.forEach(col => {
-      if (queryLower.includes(col.toLowerCase())) {
+      const colLower = col.toLowerCase();
+      if (queryLower.includes(colLower)) {
         if (typeof data[0][col] === 'number') {
           selectedYKey = col;
         } else {
@@ -305,6 +322,38 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
     }
   };
 
+  // Function to download chart data as CSV
+  const downloadChartData = (chartData: any[]) => {
+    if (!chartData || chartData.length === 0) return;
+    
+    // Convert to CSV
+    const headers = Object.keys(chartData[0]);
+    const csvRows = [
+      headers.join(','),
+      ...chartData.map(row => 
+        headers.map(header => {
+          const val = row[header];
+          return typeof val === 'string' ? `"${val.replace(/"/g, '""')}"` : val;
+        }).join(',')
+      )
+    ];
+    
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `chart-data-${Date.now()}.csv`);
+    document.body.appendChild(link);
+    
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Render the appropriate chart based on type and data
   const renderChart = (message: MessageType) => {
     if (!message.hasChart || !message.chartData || message.chartData.length === 0) {
@@ -326,7 +375,17 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
     if (message.chartType === "line") {
       return (
         <div className="w-full h-64">
-          <p className="text-sm font-medium text-center mb-2">{chartTitle}</p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium">{chartTitle}</p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-7 text-xs"
+              onClick={() => downloadChartData(message.chartData || [])}
+            >
+              Export Data
+            </Button>
+          </div>
           <ResponsiveContainer width="100%" height="100%">
             <RechartsLineChart data={message.chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
@@ -339,6 +398,7 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
                 dataKey={yKey} 
                 stroke="#8884d8" 
                 activeDot={{ r: 8 }} 
+                key={yKey} // Add key prop to fix the warning
               />
             </RechartsLineChart>
           </ResponsiveContainer>
@@ -349,7 +409,17 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
       
       return (
         <div className="w-full h-64">
-          <p className="text-sm font-medium text-center mb-2">{chartTitle}</p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium">{chartTitle}</p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-7 text-xs"
+              onClick={() => downloadChartData(message.chartData || [])}
+            >
+              Export Data
+            </Button>
+          </div>
           <ResponsiveContainer width="100%" height="100%">
             <RechartsBarChart data={message.chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
@@ -371,7 +441,17 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
     } else if (message.chartType === "pie") {
       return (
         <div className="w-full h-64">
-          <p className="text-sm font-medium text-center mb-2">{chartTitle}</p>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium">{chartTitle}</p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-7 text-xs"
+              onClick={() => downloadChartData(message.chartData || [])}
+            >
+              Export Data
+            </Button>
+          </div>
           <ResponsiveContainer width="100%" height="100%">
             <RechartsPieChart>
               <Pie
