@@ -14,7 +14,7 @@ export interface KpiCardProps {
 }
 
 export const KpiCard = ({ title, value, change, icon, sparklineData, tooltipText }: KpiCardProps) => (
-  <Card className="overflow-hidden border-border/40 hover-scale shadow-soft">
+  <Card className="overflow-hidden border-border/40 hover-scale shadow-soft w-full h-full">
     <CardHeader className="pb-2">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
@@ -28,7 +28,7 @@ export const KpiCard = ({ title, value, change, icon, sparklineData, tooltipText
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="top">
-                  <p className="w-48 text-xs">{tooltipText}</p>
+                  <p className="max-w-xs text-xs">{tooltipText}</p>
                 </TooltipContent>
               </UITooltip>
             </TooltipProvider>
@@ -41,14 +41,14 @@ export const KpiCard = ({ title, value, change, icon, sparklineData, tooltipText
     </CardHeader>
     <CardContent>
       <div className="flex items-end justify-between">
-        <div>
-          <div className="text-2xl font-bold">{value}</div>
+        <div className="flex-shrink-0">
+          <div className="text-xl sm:text-2xl font-bold">{value}</div>
           <div className={`text-xs flex items-center mt-1 ${change.positive ? 'text-green-500' : 'text-red-500'}`}>
             {change.positive ? <ArrowUp className="h-3 w-3 mr-1" /> : <ArrowDown className="h-3 w-3 mr-1" />}
             {change.value}
           </div>
         </div>
-        <div className="h-10 w-20">
+        <div className="h-10 w-16 sm:w-20 flex-shrink-0">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={sparklineData}>
               <Line 

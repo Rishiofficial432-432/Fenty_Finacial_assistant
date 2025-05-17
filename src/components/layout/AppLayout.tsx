@@ -106,17 +106,17 @@ const AppLayoutContent = () => {
         className="border-r border-sidebar-border shadow-soft rounded-r-3xl overflow-hidden"
         style={{
           background: "linear-gradient(135deg, #1A1F2C 0%, #262D40 100%)",
-          width: isCollapsed ? "6rem" : "22rem", // Increased width for better content alignment
+          width: isCollapsed ? "5rem" : "20rem",
         }}
       >
-        <SidebarHeader className="flex items-center px-6 py-5">
+        <SidebarHeader className="flex items-center px-4 py-5">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full pl-0" : "justify-start"}`}
+            className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
           >
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center mr-3 flex-shrink-0">
+            <div className={`h-10 w-10 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center ${isCollapsed ? "mx-auto" : "mr-3"} flex-shrink-0`}>
               <span className="text-white font-bold text-lg">A</span>
             </div>
             {!isCollapsed && (
@@ -287,8 +287,8 @@ const AppLayoutContent = () => {
         </SidebarFooter>
       </Sidebar>
 
-      <main className="flex flex-1 flex-col overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-border/40 h-16 px-6 bg-background rounded-tl-3xl">
+      <main className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex items-center justify-between border-b border-border/40 h-16 px-4 sm:px-6 bg-background rounded-tl-3xl">
           <div className="flex items-center gap-2">
             {isCollapsed && (
               <SidebarTrigger className="h-8 w-8 text-foreground hover:text-purple-500">
@@ -386,7 +386,7 @@ const AppLayoutContent = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="flex-1 p-6 overflow-x-hidden"
+          className="flex-1 p-4 sm:p-6 overflow-auto"
         >
           <Outlet />
         </motion.div>

@@ -32,9 +32,9 @@ export const ChartCard = ({
   onOptionSelect,
 }: ChartCardProps) => {
   return (
-    <Card className={`border-border/40 shadow-soft overflow-hidden ${className}`}>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center gap-2">
+    <Card className={`border-border/40 shadow-soft overflow-hidden w-full ${className}`}>
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-2">
+        <div className="flex items-center gap-2 mb-2 sm:mb-0">
           <span className="rounded-md bg-primary/10 p-2 text-primary dark:bg-primary/20">
             {icon}
           </span>
@@ -47,7 +47,7 @@ export const ChartCard = ({
         {onOptionSelect && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
                 <ChevronDown className="h-4 w-4" />
                 <span className="sr-only">Show options</span>
               </Button>
@@ -66,7 +66,9 @@ export const ChartCard = ({
           </DropdownMenu>
         )}
       </CardHeader>
-      <CardContent className={`${height} px-2`}>{children}</CardContent>
+      <CardContent className={`${height} px-2`}>
+        {children}
+      </CardContent>
     </Card>
   );
 };

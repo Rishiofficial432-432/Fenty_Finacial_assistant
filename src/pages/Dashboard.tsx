@@ -27,7 +27,6 @@ export default function Dashboard() {
     setRefresh((prev) => prev + 1);
     setAnimateCharts(true);
     
-    // Show toast when refreshing
     toast({
       title: "Dashboard Refreshed",
       description: "Your financial data has been updated",
@@ -40,7 +39,6 @@ export default function Dashboard() {
     setUploadedFile(file);
     setActiveTab("chat");
     
-    // Show toast when file is uploaded
     toast({
       title: "File Uploaded",
       description: `Successfully uploaded ${file.name}`,
@@ -76,11 +74,11 @@ export default function Dashboard() {
     >
       <DashboardHeader onRefresh={handleRefresh} refreshCount={refresh} />
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         <PrimaryKpiCards />
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         <SecondaryKpiCards />
       </div>
       
