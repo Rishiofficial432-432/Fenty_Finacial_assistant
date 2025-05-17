@@ -7,12 +7,12 @@ import { cardVariants, monthlyIncomeData } from "./ChartData";
 export const PrimaryKpiCards = () => {
   return (
     <>
-      <motion.div variants={cardVariants} className="col-span-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <motion.div variants={cardVariants} className="col-span-full grid grid-cols-2 gap-3 xs:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           title="Total Assets"
           value="$1,245,600"
           change={{ value: "8.2% this month", positive: true }}
-          icon={<Wallet className="h-4 w-4" />}
+          icon={<Wallet className="h-3.5 w-3.5" />}
           sparklineData={[
             { name: 'Apr', value: 1150000 },
             { name: 'May', value: 1180000 },
@@ -26,7 +26,7 @@ export const PrimaryKpiCards = () => {
           title="Monthly Income"
           value="$24,350"
           change={{ value: "3.1% this month", positive: true }}
-          icon={<DollarSign className="h-4 w-4" />}
+          icon={<DollarSign className="h-3.5 w-3.5" />}
           sparklineData={monthlyIncomeData}
           tooltipText="Total monthly income from all investments including dividends, interest, and rental income"
         />
@@ -35,7 +35,7 @@ export const PrimaryKpiCards = () => {
           title="Expenses"
           value="$12,780"
           change={{ value: "2.4% this month", positive: false }}
-          icon={<BarChart3 className="h-4 w-4" />}
+          icon={<BarChart3 className="h-3.5 w-3.5" />}
           sparklineData={[
             { name: 'Apr', value: 12200 },
             { name: 'May', value: 12500 },
@@ -49,7 +49,7 @@ export const PrimaryKpiCards = () => {
           title="ROI"
           value="18.6%"
           change={{ value: "5.3% this year", positive: true }}
-          icon={<TrendingUp className="h-4 w-4" />}
+          icon={<TrendingUp className="h-3.5 w-3.5" />}
           sparklineData={[
             { name: 'Apr', value: 16.2 },
             { name: 'May', value: 17.1 },
@@ -66,12 +66,12 @@ export const PrimaryKpiCards = () => {
 export const SecondaryKpiCards = () => {
   return (
     <>
-      <motion.div variants={cardVariants} className="col-span-full grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <motion.div variants={cardVariants} className="col-span-full grid grid-cols-2 gap-3 xs:gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           title="Net Worth Growth"
           value="12.4%"
           change={{ value: "1.8% this month", positive: true }}
-          icon={<ArrowUpRight className="h-4 w-4" />}
+          icon={<ArrowUpRight className="h-3.5 w-3.5" />}
           tooltipText="Year-to-date growth of your total net worth"
         />
         
@@ -79,7 +79,7 @@ export const SecondaryKpiCards = () => {
           title="Dividend Yield"
           value="4.2%"
           change={{ value: "0.3% this month", positive: true }}
-          icon={<Percent className="h-4 w-4" />}
+          icon={<Percent className="h-3.5 w-3.5" />}
           tooltipText="Average dividend yield across your dividend-paying investments"
         />
         
@@ -87,7 +87,7 @@ export const SecondaryKpiCards = () => {
           title="Asset Utilization"
           value="85.3%"
           change={{ value: "2.1% this month", positive: true }}
-          icon={<Target className="h-4 w-4" />}
+          icon={<Target className="h-3.5 w-3.5" />}
           tooltipText="Percentage of total assets currently allocated in productive investments"
         />
         
@@ -95,7 +95,7 @@ export const SecondaryKpiCards = () => {
           title="Risk Adjusted Return"
           value="7.8"
           change={{ value: "0.6 this month", positive: true }}
-          icon={<Activity className="h-4 w-4" />}
+          icon={<Activity className="h-3.5 w-3.5" />}
           tooltipText="Sharpe ratio measuring return relative to risk taken"
         />
       </motion.div>

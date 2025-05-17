@@ -26,33 +26,37 @@ export const ChartCard = ({
   description,
   icon,
   children,
-  height = 'h-[300px]',
+  height = 'h-[280px]', // Slightly reduced from 300px
   config,
   className = '',
   onOptionSelect,
 }: ChartCardProps) => {
   return (
     <Card className={`border-border/40 shadow-soft overflow-hidden w-full ${className}`}>
-      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-2">
-        <div className="flex items-center gap-2 mb-2 sm:mb-0">
-          <span className="rounded-md bg-primary/10 p-2 text-primary dark:bg-primary/20">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-1.5">
+        <div className="flex items-center gap-2 mb-1 sm:mb-0">
+          <span className="rounded-md bg-primary/10 p-1.5 text-primary dark:bg-primary/20">
             {icon}
           </span>
           <div>
-            <CardTitle className="text-base">{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
+            <CardTitle className="text-sm">
+              {title}
+            </CardTitle>
+            <CardDescription className="text-xs">
+              {description}
+            </CardDescription>
           </div>
         </div>
         
         {onOptionSelect && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
-                <ChevronDown className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-7 w-7 flex-shrink-0">
+                <ChevronDown className="h-3.5 w-3.5" />
                 <span className="sr-only">Show options</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="text-sm">
               <DropdownMenuItem onClick={() => onOptionSelect('week')}>
                 This Week
               </DropdownMenuItem>
@@ -66,7 +70,7 @@ export const ChartCard = ({
           </DropdownMenu>
         )}
       </CardHeader>
-      <CardContent className={`${height} px-2`}>
+      <CardContent className={`${height} px-1 sm:px-2 flex items-center justify-center`}>
         {children}
       </CardContent>
     </Card>

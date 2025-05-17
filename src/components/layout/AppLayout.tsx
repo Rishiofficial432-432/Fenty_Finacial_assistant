@@ -55,6 +55,9 @@ const USER = {
   role: "Administrator",
 };
 
+// Set the optimal sidebar widths
+const SIDEBAR_EXPANDED_WIDTH = "16rem"; // Reduced from 20rem to 16rem
+
 // Separate the inner content into its own component, which can safely use useSidebar
 const AppLayoutContent = () => {
   const location = useLocation();
@@ -106,21 +109,21 @@ const AppLayoutContent = () => {
         className="border-r border-sidebar-border shadow-soft rounded-r-3xl overflow-hidden"
         style={{
           background: "linear-gradient(135deg, #1A1F2C 0%, #262D40 100%)",
-          width: isCollapsed ? "5rem" : "20rem",
+          width: isCollapsed ? "4rem" : SIDEBAR_EXPANDED_WIDTH, // Using the constant here
         }}
       >
-        <SidebarHeader className="flex items-center px-4 py-5">
+        <SidebarHeader className="flex items-center px-3 py-5">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className={`flex items-center overflow-hidden ${isCollapsed ? "justify-center w-full" : "justify-start"}`}
           >
-            <div className={`h-10 w-10 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center ${isCollapsed ? "mx-auto" : "mr-3"} flex-shrink-0`}>
+            <div className={`h-9 w-9 rounded-lg bg-gradient-to-br from-[#9b87f5] to-[#8B5CF6] flex items-center justify-center ${isCollapsed ? "mx-auto" : "mr-2.5"} flex-shrink-0`}>
               <span className="text-white font-bold text-lg">A</span>
             </div>
             {!isCollapsed && (
-              <span className="text-xl font-bold text-gradient">Aveion</span>
+              <span className="text-lg font-bold text-gradient">Aveion</span>
             )}
           </motion.div>
           <SidebarTrigger className={`ml-auto flex-shrink-0 text-white hover:text-purple-300 ${isCollapsed ? "hidden" : ""}`}>
@@ -128,11 +131,11 @@ const AppLayoutContent = () => {
           </SidebarTrigger>
         </SidebarHeader>
 
-        <SidebarContent className="overflow-hidden px-4">
+        <SidebarContent className="overflow-hidden px-3">
           {!isCollapsed && (
             <div className="pb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-sidebar-foreground/70" />
+                <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-sidebar-foreground/70" />
                 <Input
                   placeholder="Quick search..."
                   className="pl-9 h-9 bg-sidebar-accent/20 border-sidebar-border/30 focus-visible:ring-sidebar-primary text-sidebar-foreground"
@@ -145,7 +148,7 @@ const AppLayoutContent = () => {
           )}
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel className="text-left pl-4 text-sidebar-foreground/70">Navigation</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left pl-3 text-sidebar-foreground/70 text-xs">Navigation</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -153,11 +156,11 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/")} 
                     tooltip="Dashboard" 
-                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-4"}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/" className={getNavClass}>
-                      <LayoutDashboard className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
-                      {!isCollapsed && <span>Dashboard</span>}
+                      <LayoutDashboard className={`${isCollapsed ? "mx-auto" : "mr-2.5"} h-4 w-4`} />
+                      {!isCollapsed && <span className="text-sm">Dashboard</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -166,11 +169,11 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/about")} 
                     tooltip="About" 
-                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-4"}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/about" className={getNavClass}>
-                      <FileText className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
-                      {!isCollapsed && <span>About</span>}
+                      <FileText className={`${isCollapsed ? "mx-auto" : "mr-2.5"} h-4 w-4`} />
+                      {!isCollapsed && <span className="text-sm">About</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -179,11 +182,11 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/history")} 
                     tooltip="History" 
-                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-4"}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/history" className={getNavClass}>
-                      <Clock className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
-                      {!isCollapsed && <span>History</span>}
+                      <Clock className={`${isCollapsed ? "mx-auto" : "mr-2.5"} h-4 w-4`} />
+                      {!isCollapsed && <span className="text-sm">History</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -192,11 +195,11 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/developers")} 
                     tooltip="Developers" 
-                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-4"}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/developers" className={getNavClass}>
-                      <BookUser className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
-                      {!isCollapsed && <span>Developers</span>}
+                      <BookUser className={`${isCollapsed ? "mx-auto" : "mr-2.5"} h-4 w-4`} />
+                      {!isCollapsed && <span className="text-sm">Developers</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -205,7 +208,7 @@ const AppLayoutContent = () => {
           </SidebarGroup>
 
           <SidebarGroup>
-            {!isCollapsed && <SidebarGroupLabel className="text-left pl-4 text-sidebar-foreground/70">Settings</SidebarGroupLabel>}
+            {!isCollapsed && <SidebarGroupLabel className="text-left pl-3 text-sidebar-foreground/70 text-xs">Settings</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -213,22 +216,22 @@ const AppLayoutContent = () => {
                     asChild 
                     isActive={isRouteActive("/settings")} 
                     tooltip="Settings" 
-                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-4"}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                   >
                     <NavLink to="/settings" className={getNavClass}>
-                      <Cog className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
-                      {!isCollapsed && <span>Settings</span>}
+                      <Cog className={`${isCollapsed ? "mx-auto" : "mr-2.5"} h-4 w-4`} />
+                      {!isCollapsed && <span className="text-sm">Settings</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 <SidebarMenuItem>
                   <SidebarMenuButton 
                     tooltip="Help" 
-                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-4"}`}
+                    className={`text-left py-2 ${isCollapsed ? "justify-center px-2" : "px-3"}`}
                     onClick={() => handleNavigate("/about", "Help & Support")}
                   >
-                    <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-3"} h-5 w-5`} />
-                    {!isCollapsed && <span>Help</span>}
+                    <HelpCircle className={`${isCollapsed ? "mx-auto" : "mr-2.5"} h-4 w-4`} />
+                    {!isCollapsed && <span className="text-sm">Help</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
@@ -237,16 +240,16 @@ const AppLayoutContent = () => {
         </SidebarContent>
 
         <SidebarFooter>
-          <div className={`px-4 pb-3 ${isCollapsed ? "flex justify-center" : ""}`}>
+          <div className={`px-3 pb-3 ${isCollapsed ? "flex justify-center" : ""}`}>
             <ThemeToggle />
           </div>
           
-          <div className="p-4 mt-auto">
+          <div className="p-3 mt-auto">
             <div className={`flex items-center p-2 rounded-md bg-sidebar-accent/20 ${isCollapsed ? "justify-center" : ""}`}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-3"}`}>
-                    <Avatar className="h-9 w-9 flex-shrink-0">
+                  <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
+                    <Avatar className="h-8 w-8 flex-shrink-0">
                       <AvatarFallback className="bg-purple-500/20 text-purple-200">
                         AJ
                       </AvatarFallback>
@@ -257,7 +260,7 @@ const AppLayoutContent = () => {
                           <p className="text-xs font-medium truncate text-sidebar-foreground">{USER.name}</p>
                           <p className="text-xs text-sidebar-foreground/70 truncate">{USER.role}</p>
                         </div>
-                        <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 text-sidebar-foreground" />
+                        <ChevronDown className="h-3.5 w-3.5 opacity-50 flex-shrink-0 text-sidebar-foreground" />
                       </>
                     )}
                   </Button>
@@ -288,7 +291,7 @@ const AppLayoutContent = () => {
       </Sidebar>
 
       <main className="flex flex-1 flex-col overflow-hidden">
-        <div className="flex items-center justify-between border-b border-border/40 h-16 px-4 sm:px-6 bg-background rounded-tl-3xl">
+        <div className="flex items-center justify-between border-b border-border/40 h-14 px-4 sm:px-6 bg-background rounded-tl-3xl">
           <div className="flex items-center gap-2">
             {isCollapsed && (
               <SidebarTrigger className="h-8 w-8 text-foreground hover:text-purple-500">
@@ -315,7 +318,7 @@ const AppLayoutContent = () => {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-9 w-9"
+                    className="h-8 w-8"
                     onClick={() => toast({
                       title: "Notifications",
                       description: "You have no new notifications",
@@ -332,7 +335,7 @@ const AppLayoutContent = () => {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-9 w-9" 
+                    className="h-8 w-8" 
                     onClick={() => setSearchOpen(!searchOpen)}
                   >
                     <Search className="h-4 w-4" />
@@ -346,7 +349,7 @@ const AppLayoutContent = () => {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-9 w-9"
+                    className="h-8 w-8"
                     onClick={() => handleNavigate("/about", "Help & Support")}  
                   >
                     <HelpCircle className="h-4 w-4" />

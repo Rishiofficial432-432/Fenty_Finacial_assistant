@@ -70,25 +70,25 @@ export default function Dashboard() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-6 w-full max-w-full overflow-hidden"
+      className="space-y-4 w-full max-w-full overflow-hidden"
     >
       <DashboardHeader onRefresh={handleRefresh} refreshCount={refresh} />
       
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-3 xs:gap-4 grid-cols-1">
         <PrimaryKpiCards />
       </div>
       
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-3 xs:gap-4 grid-cols-1">
         <SecondaryKpiCards />
       </div>
       
       <motion.div variants={containerVariants} className="w-full">
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <TabsList className="mb-2 sm:mb-0">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="investments">Investments</TabsTrigger>
-              <TabsTrigger value="chat">Chat & Reports</TabsTrigger>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+            <TabsList className="mb-2 sm:mb-0 h-8">
+              <TabsTrigger value="overview" className="text-xs h-7 px-3">Overview</TabsTrigger>
+              <TabsTrigger value="investments" className="text-xs h-7 px-3">Investments</TabsTrigger>
+              <TabsTrigger value="chat" className="text-xs h-7 px-3">Chat & Reports</TabsTrigger>
             </TabsList>
             
             <div className="flex flex-wrap items-center gap-2">
@@ -97,8 +97,9 @@ export default function Dashboard() {
                   id="compare" 
                   checked={showPeriodComparison}
                   onCheckedChange={(checked) => setShowPeriodComparison(!!checked)}
+                  className="h-3.5 w-3.5"
                 />
-                <label htmlFor="compare" className="text-sm text-muted-foreground cursor-pointer">
+                <label htmlFor="compare" className="text-xs text-muted-foreground cursor-pointer">
                   Compare to previous period
                 </label>
               </div>
@@ -107,32 +108,32 @@ export default function Dashboard() {
                 <Button 
                   size="sm" 
                   variant="outline"
-                  className="flex items-center gap-1 hover-lift"
+                  className="flex items-center gap-1 hover-lift h-7 text-xs"
                   onClick={() => handleNavigate("/history", "History")}
                 >
-                  <Filter className="h-4 w-4" />
+                  <Filter className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Filter</span>
                 </Button>
                 
                 <Button 
                   size="sm" 
                   variant="outline"
-                  className="flex items-center gap-1 hover-lift"
+                  className="flex items-center gap-1 hover-lift h-7 text-xs"
                   onClick={() => toast({
                     title: "Exporting Data",
                     description: "Your financial data is being prepared for download."
                   })}
                 >
-                  <Download className="h-4 w-4" />
+                  <Download className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">Export</span>
                 </Button>
                 
                 <Button 
                   size="sm"
-                  className="flex items-center gap-1 hover-lift"
+                  className="flex items-center gap-1 hover-lift h-7 text-xs"
                   onClick={() => handleNavigate("/developers", "Developers")}
                 >
-                  <PlusCircle className="h-4 w-4" />
+                  <PlusCircle className="h-3.5 w-3.5" />
                   <span className="hidden sm:inline">New Report</span>
                 </Button>
               </div>
