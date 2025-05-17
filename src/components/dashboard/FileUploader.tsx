@@ -49,10 +49,14 @@ export function FileUploader({ onFileUpload }: FileUploaderProps) {
     const validTypes = [
       'text/csv', 
       'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'text/plain' // Also accept text files which might be CSV
     ];
     
-    if (!validTypes.includes(file.type)) {
+    const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
+    const isValidExtension = ['csv', 'xls', 'xlsx', 'txt'].includes(fileExtension);
+    
+    if (!validTypes.includes(file.type) && !isValidExtension) {
       toast({
         title: "Invalid file type",
         description: "Please upload a CSV or Excel file.",
@@ -97,7 +101,7 @@ export function FileUploader({ onFileUpload }: FileUploaderProps) {
               type="file"
               id="file-upload"
               className="hidden"
-              accept=".csv,.xlsx,.xls"
+              accept=".csv,.xlsx,.xls,.txt"
               onChange={handleChange}
             />
             
@@ -108,7 +112,7 @@ export function FileUploader({ onFileUpload }: FileUploaderProps) {
               
               <div className="text-sm">
                 <p className="font-medium">Drop your file here or click to browse</p>
-                <p className="text-muted-foreground mt-1">Supports CSV and Excel files</p>
+                <p className="text-muted-foreground mt-1">Supports CSV, Excel and TXT files</p>
               </div>
               
               <label htmlFor="file-upload">

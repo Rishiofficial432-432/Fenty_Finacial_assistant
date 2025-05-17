@@ -2,7 +2,7 @@
 import React, { ReactElement } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Download } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +19,8 @@ export interface ChartCardProps {
   config?: any;
   className?: string;
   onOptionSelect?: (option: string) => void;
+  allowDownload?: boolean;
+  onDownload?: () => void;
 }
 
 export const ChartCard = ({
@@ -26,10 +28,12 @@ export const ChartCard = ({
   description,
   icon,
   children,
-  height = 'h-[280px]', // Slightly reduced from 300px
+  height = 'h-[280px]',
   config,
   className = '',
   onOptionSelect,
+  allowDownload = false,
+  onDownload,
 }: ChartCardProps) => {
   return (
     <Card className={`border-border/40 shadow-soft overflow-hidden w-full ${className}`}>
@@ -48,27 +52,47 @@ export const ChartCard = ({
           </div>
         </div>
         
-        {onOptionSelect && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-7 w-7 flex-shrink-0">
-                <ChevronDown className="h-3.5 w-3.5" />
-                <span className="sr-only">Show options</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="text-sm">
-              <DropdownMenuItem onClick={() => onOptionSelect('week')}>
-                This Week
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onOptionSelect('month')}>
-                This Month
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onOptionSelect('year')}>
-                This Year
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        <div className="flex items-center gap-2">
+          {allowDownload && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-7 w-7 flex-shrink-0"
+              onClick={onDownload}
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span className="sr-only">Download chart data</span>
+            </Button>
+          )}
+          
+          {onOptionSelect && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-7 w-7 flex-shrink-0">
+                  <ChevronDown className="h-3.5 w-3.5" />
+                  <span className="sr-only">Show options</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="text-sm">
+                <DropdownMenuItem onClick={() => onOptionSelect('day')}>
+                  Today
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onOptionSelect('week')}>
+                  This Week
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onOptionSelect('month')}>
+                  This Month
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onOptionSelect('quarter')}>
+                  This Quarter
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onOptionSelect('year')}>
+                  This Year
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </CardHeader>
       <CardContent className={`${height} px-1 sm:px-2 flex items-center justify-center`}>
         {children}

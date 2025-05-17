@@ -11,8 +11,17 @@ import { ChatTab } from "@/components/dashboard/ChatTab";
 import { containerVariants } from "@/components/dashboard/ChartData";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Download, Filter, PlusCircle } from "lucide-react";
+import { 
+  Download, 
+  Filter, 
+  PlusCircle, 
+  FileJson, 
+  FileSpreadsheet, 
+  SearchCheck,
+  Bot 
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -20,6 +29,7 @@ export default function Dashboard() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showPeriodComparison, setShowPeriodComparison] = useState(false);
   const [animateCharts, setAnimateCharts] = useState(false);
+  const [showAdvancedMetrics, setShowAdvancedMetrics] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -64,6 +74,123 @@ export default function Dashboard() {
     return () => clearTimeout(timer);
   }, []);
 
+  const renderDataInsightsPanel = () => {
+    if (!showAdvancedMetrics) return null;
+    
+    return (
+      <motion.div 
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: "auto" }}
+        exit={{ opacity: 0, height: 0 }}
+        className="grid gap-3 xs:gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+      >
+        <Card className="border-border/40 shadow-soft">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <FileJson className="h-4 w-4 text-blue-500" />
+              Data Integrations
+            </CardTitle>
+            <CardDescription className="text-xs">Connected data sources</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>CSV Files</span>
+                <span className="font-medium">3</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Excel Sheets</span>
+                <span className="font-medium">2</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>API Connections</span>
+                <span className="font-medium">1</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-border/40 shadow-soft">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <SearchCheck className="h-4 w-4 text-emerald-500" />
+              Data Quality
+            </CardTitle>
+            <CardDescription className="text-xs">Health metrics</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>Completeness</span>
+                <span className="font-medium text-emerald-500">98%</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Consistency</span>
+                <span className="font-medium text-emerald-500">96%</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Freshness</span>
+                <span className="font-medium text-amber-500">84%</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-border/40 shadow-soft">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Bot className="h-4 w-4 text-purple-500" />
+              AI Insights
+            </CardTitle>
+            <CardDescription className="text-xs">Generated this month</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>Reports Generated</span>
+                <span className="font-medium">12</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Data Analyses</span>
+                <span className="font-medium">24</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Forecast Accuracy</span>
+                <span className="font-medium text-emerald-500">92%</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="border-border/40 shadow-soft">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <FileSpreadsheet className="h-4 w-4 text-amber-500" />
+              Data Volume
+            </CardTitle>
+            <CardDescription className="text-xs">Processing metrics</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>Rows Processed</span>
+                <span className="font-medium">124,532</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Total Files</span>
+                <span className="font-medium">18</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span>Storage Used</span>
+                <span className="font-medium">2.4 GB</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    );
+  };
+
   return (
     <motion.div
       key={refresh}
@@ -81,6 +208,8 @@ export default function Dashboard() {
       <div className="grid gap-3 xs:gap-4 grid-cols-1">
         <SecondaryKpiCards />
       </div>
+      
+      {renderDataInsightsPanel()}
       
       <motion.div variants={containerVariants} className="w-full">
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -101,6 +230,18 @@ export default function Dashboard() {
                 />
                 <label htmlFor="compare" className="text-xs text-muted-foreground cursor-pointer">
                   Compare to previous period
+                </label>
+              </div>
+              
+              <div className="flex items-center space-x-2 ml-4">
+                <Checkbox 
+                  id="advanced" 
+                  checked={showAdvancedMetrics}
+                  onCheckedChange={(checked) => setShowAdvancedMetrics(!!checked)}
+                  className="h-3.5 w-3.5"
+                />
+                <label htmlFor="advanced" className="text-xs text-muted-foreground cursor-pointer">
+                  Show advanced metrics
                 </label>
               </div>
               
