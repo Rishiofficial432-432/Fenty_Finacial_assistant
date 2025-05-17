@@ -16,7 +16,15 @@ import NotFound from "./pages/NotFound";
 import Developers from "./pages/Developers";
 import Settings from "./pages/Settings";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 60 * 1000, // 1 minute
+    },
+  },
+});
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -42,7 +50,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Sonner />
+        <Sonner position="top-right" closeButton={true} richColors />
         
         {loading && hasShownLoader ? (
           <LoadingScreen onLoadComplete={handleLoadComplete} />
@@ -55,7 +63,10 @@ const App = () => {
                 <Route path="history" element={<History />} />
                 <Route path="developers" element={<Developers />} />
                 <Route path="settings" element={<Settings />} />
+                {/* Fallback for any nested routes */}
+                <Route path="*" element={<NotFound />} />
               </Route>
+              {/* Global fallback for all routes */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
