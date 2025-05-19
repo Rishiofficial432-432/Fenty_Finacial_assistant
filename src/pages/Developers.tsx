@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,24 +46,24 @@ interface Developer {
 
 const developers: Developer[] = [
   {
-    name: "Smit",
-    role: "Full Stack Developer & Founder",
-    bio: "Founder and leader of Aveion AI. Full-stack developer specializing in creating innovative solutions and leading teams to build cutting-edge applications.",
-    imagePath: "/lovable-uploads/cc34679d-36d4-4f76-a99d-dce7d50cfaca.png",
-    initials: "S",
+    name: "Rishi",
+    role: "Visionary Founder & Team Leader",
+    bio: "Founder and leader of Aveion AI India. Full-stack developer specializing in creating innovative solutions and leading teams to build cutting-edge applications.",
+    imagePath: "/lovable-uploads/79043d60-aea9-43c5-aef2-14fa4631dd63.png",
+    initials: "R",
     skills: ["React", "TypeScript", "Node.js", "AI Integration", "Team Leadership"],
     social: {
-      github: "https://github.com/smitaveion",
-      linkedin: "https://linkedin.com/in/smitaveion",
-      twitter: "https://twitter.com/smitaveion",
-      email: "smit@aveion.ai"
+      github: "https://github.com/rishiaveion",
+      linkedin: "https://linkedin.com/in/rishiaveion",
+      twitter: "https://twitter.com/rishiaveion",
+      email: "rishi@aveion.ai"
     }
   },
   {
     name: "Ankita Sharma",
     role: "Head of Creative Department & Senior UI/UX Designer",
     bio: "Leading the creative vision with innovative design thinking. Creates beautiful, intuitive user experiences that blend artistry with functionality.",
-    imagePath: "/lovable-uploads/5b7ca514-45fe-4add-b1be-f18bcc910da1.png",
+    imagePath: "/lovable-uploads/ea548d8a-3c4a-4cfa-9afe-8e2773b50db8.png",
     initials: "AS",
     skills: ["UI Design", "UX Research", "Visual Design", "Prototyping", "Design Systems"],
     social: {
@@ -73,11 +74,11 @@ const developers: Developer[] = [
   },
   {
     name: "Tanmay Parmar",
-    role: "Cybersecurity Expert & Full Stack Developer",
+    role: "Head of Security Department & Cyber Security Expert",
     bio: "Security specialist with extensive knowledge in protecting digital assets. Combines security expertise with full-stack development skills to build robust applications.",
-    imagePath: "/lovable-uploads/74032efd-a039-4b8e-8397-48960c90036e.png",
+    imagePath: "/lovable-uploads/db6c2a68-dcb9-4a9f-8eaa-87a2f7e4c9c9.png",
     initials: "TP",
-    skills: ["Cybersecurity", "Penetration Testing", "React", "Node.js", "Security Architecture"],
+    skills: ["Cybersecurity", "Penetration Testing", "Ethical Hacking", "Security Architecture", "Risk Assessment"],
     social: {
       github: "https://github.com/tanmayparmar",
       linkedin: "https://linkedin.com/in/tanmayparmar",
@@ -88,21 +89,24 @@ const developers: Developer[] = [
 ];
 
 export default function Developers() {
+  const isMobile = useIsMobile();
+  
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-6"
+      className="space-y-8"
     >
       <motion.div variants={cardVariants}>
-        <h1 className="text-3xl font-bold tracking-tight purple-gradient-text">Meet Our Team</h1>
-        <p className="text-muted-foreground mt-2">
-          The talented developers behind Aveion AI, creating powerful tools to transform your data into insights.
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight purple-gradient-text">Meet Our Team</h1>
+        <p className="text-muted-foreground mt-2 max-w-2xl">
+          The talented individuals behind Aveion AI India, creating powerful tools and innovative solutions for digital transformation.
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
+      {/* Developer profiles grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
         {developers.map((developer, index) => (
           <motion.div
             key={developer.name}
@@ -113,9 +117,13 @@ export default function Developers() {
             <Card className="h-full hover-scale border-border/40 shadow-soft flex flex-col">
               <CardHeader className="pb-2">
                 <div className="flex flex-col items-center">
-                  <Avatar className="h-32 w-32 mb-4">
+                  <Avatar className="h-40 w-40 mb-6 ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
                     {developer.imagePath ? (
-                      <AvatarImage src={developer.imagePath} alt={developer.name} className="object-cover" />
+                      <AvatarImage 
+                        src={developer.imagePath} 
+                        alt={developer.name} 
+                        className="object-cover"
+                      />
                     ) : null}
                     <AvatarFallback className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-4xl">
                       {developer.initials}
@@ -172,18 +180,19 @@ export default function Developers() {
         ))}
       </div>
 
-      <motion.div variants={cardVariants} className="mt-10">
+      {/* About our team section */}
+      <motion.div variants={cardVariants} className="mt-12">
         <Card className="border-border/40 shadow-soft">
           <CardHeader>
-            <CardTitle>About Our Development Process</CardTitle>
-            <CardDescription>How we work together to build Aveion AI</CardDescription>
+            <CardTitle>About Our Team</CardTitle>
+            <CardDescription>How we collaborate to build Aveion AI</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>
-              Our team follows an agile development approach, combining design thinking with data science expertise. 
-              We believe in user-centered design, rapid prototyping, and continuous deployment to create tools that 
-              truly serve your needs. Each team member brings unique skills and perspectives that contribute to the 
-              robust, intuitive platform you see today.
+            <p className="text-muted-foreground">
+              Our team combines technical expertise, creative design thinking, and security knowledge to build 
+              powerful AI-driven solutions. With Rishi's leadership, Ankita's design vision, and Tanmay's security expertise, 
+              we create applications that are not only functional and beautiful but also secure and reliable. We believe in 
+              user-centered design, rapid prototyping, and continuous improvement to create tools that truly serve your needs.
             </p>
           </CardContent>
         </Card>
