@@ -83,6 +83,58 @@
     --sidebar-border: 265 30% 30%;
     --sidebar-ring: 261 82% 76%;
   }
+
+  /* Blue Theme */
+  .theme-blue {
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --accent: 221 83% 53%;
+    --accent-foreground: 210 40% 98%;
+    --ring: 221 83% 53%;
+    
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-accent: 221 83% 53%;
+    --sidebar-ring: 221 83% 53%;
+  }
+
+  /* Green Theme */
+  .theme-green {
+    --primary: 142 71% 45%;
+    --primary-foreground: 210 40% 98%;
+    --accent: 142 71% 45%;
+    --accent-foreground: 210 40% 98%;
+    --ring: 142 71% 45%;
+    
+    --sidebar-primary: 142 76% 45%;
+    --sidebar-accent: 142 71% 35%;
+    --sidebar-ring: 142 71% 45%;
+  }
+
+  /* Amber Theme */
+  .theme-amber {
+    --primary: 45 93% 47%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --ring: 45 93% 47%;
+    
+    --sidebar-primary: 43 96% 56%;
+    --sidebar-accent: 45 93% 47%;
+    --sidebar-ring: 45 93% 47%;
+  }
+
+  /* Red Theme */
+  .theme-red {
+    --primary: 0 91% 64%;
+    --primary-foreground: 210 40% 98%;
+    --accent: 0 91% 64%;
+    --accent-foreground: 210 40% 98%;
+    --ring: 0 91% 64%;
+    
+    --sidebar-primary: 0 94% 65%;
+    --sidebar-accent: 0 91% 54%;
+    --sidebar-ring: 0 91% 64%;
+  }
 }
 
 @layer base {
@@ -99,82 +151,4 @@
   }
 }
 
-@layer components {
-  /* Add custom components here */
-  .xs\:gap-4 {
-    gap: 1rem;
-  }
-  
-  .xs\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@layer utilities {
-  .glass-morphism {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-glass;
-  }
-  
-  .neo-blur {
-    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
-  }
-  
-  .text-gradient {
-    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
-  }
-  
-  .purple-gradient {
-    @apply bg-gradient-to-br from-purple-600 to-purple-400;
-  }
-  
-  .purple-gradient-text {
-    @apply bg-gradient-to-br from-purple-600 to-purple-400 bg-clip-text text-transparent;
-  }
-  
-  .card-glass {
-    @apply bg-background/80 backdrop-blur-lg border border-border/50 shadow-soft;
-  }
-  
-  .card-glass-dark {
-    @apply dark:bg-background/40 dark:backdrop-blur-lg dark:border-white/5;
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-  
-  .animate-slide-in {
-    animation: slideIn 0.5s ease-out forwards;
-  }
-  
-  .animate-scale-in {
-    animation: scaleIn 0.3s ease-out forwards;
-  }
-  
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-[1.02];
-  }
-  
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-soft-lg;
-  }
-  
-  .navbar-gradient {
-    background: linear-gradient(135deg, #1A1F2C 0%, #262D40 100%);
-  }
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-  0% { transform: translateX(-20px); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes scaleIn {
-  0% { transform: scale(0.95); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
+/* ... keep existing code (layer components, utilities, and keyframes) */

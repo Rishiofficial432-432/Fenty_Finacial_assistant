@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,9 +21,11 @@ import {
   Smartphone, 
   UserCog,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@/context/UserContext";
+import { useTheme } from "@/hooks/useTheme";
+import { useColorTheme } from "@/context/ColorThemeContext";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -50,13 +51,14 @@ const itemVariants = {
 
 export default function Settings() {
   const { user, updateUser, logout } = useUser();
+  const { theme, setTheme } = useTheme();
+  const { colorTheme, setColorTheme } = useColorTheme();
   const [activeTab, setActiveTab] = useState("profile");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [mobileNotifications, setMobileNotifications] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   
   // Form state for user profile
   const [name, setName] = useState(user?.name || "");
@@ -64,11 +66,28 @@ export default function Settings() {
   const [role, setRole] = useState(user?.role || "");
   const [jobTitle, setJobTitle] = useState("Financial Analyst");
   const [bio, setBio] = useState("Financial analyst with 8+ years of experience in portfolio management and investment strategies.");
+  
+  // Theme settings
+  const [darkModeEnabled, setDarkModeEnabled] = useState(theme === "dark");
+  const [selectedColorTheme, setSelectedColorTheme] = useState(colorTheme);
+
+  // Sync theme state with the actual theme
+  useEffect(() => {
+    setDarkModeEnabled(theme === "dark");
+  }, [theme]);
+
+  useEffect(() => {
+    setSelectedColorTheme(colorTheme);
+  }, [colorTheme]);
 
   const handleSaveChanges = () => {
     // Update user profile
     if (activeTab === "profile") {
       updateUser({ name, email, role });
+    } else if (activeTab === "appearance") {
+      // Update theme settings
+      setTheme(darkModeEnabled ? "dark" : "light");
+      setColorTheme(selectedColorTheme);
     }
     
     toast({
@@ -287,7 +306,7 @@ export default function Settings() {
                   
                   <div className="space-y-2">
                     <Label htmlFor="theme">Color Theme</Label>
-                    <Select defaultValue="purple">
+                    <Select value={selectedColorTheme} onValueChange={setSelectedColorTheme}>
                       <SelectTrigger id="theme">
                         <SelectValue placeholder="Select color theme" />
                       </SelectTrigger>

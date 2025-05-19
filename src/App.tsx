@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { UserProvider, useUser, initializeDefaultUser } from "@/context/UserContext";
+import { ColorThemeProvider } from "@/context/ColorThemeContext";
 
 // Pages
 import Dashboard from "./pages/Dashboard";
@@ -108,7 +109,9 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <UserProvider>
-        <AppContent />
+        <ColorThemeProvider>
+          <AppContent />
+        </ColorThemeProvider>
       </UserProvider>
     </QueryClientProvider>
   );
