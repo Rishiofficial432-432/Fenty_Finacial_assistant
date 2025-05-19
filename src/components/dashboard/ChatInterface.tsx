@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, LineChart, BarChart, PieChart, FileJson } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import * as XLSX from 'xlsx';
 import { 
   LineChart as RechartsLineChart, 
   Line, 
@@ -86,7 +87,89 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
     scrollToBottom();
   }, [messages]);
 
-  // Parse CSV/Excel data
+  // Detect file type and use appropriate parser
+  const parseFile = async (file: File) => {
+    try {
+      const fileName = file.name.toLowerCase();
+      const fileExtension = fileName.split('.').pop() || '';
+      
+      console.log(`Parsing file: ${fileName} with extension: ${fileExtension}`);
+      
+      // For Excel files (.xlsx, .xls)
+      if (['xlsx', 'xls'].includes(fileExtension)) {
+        return await parseExcelData(file);
+      } 
+      // For CSV files
+      else if (['csv', 'txt'].includes(fileExtension)) {
+        return await parseCSVData(file);
+      } 
+      else {
+        throw new Error(`Unsupported file format: ${fileExtension}`);
+      }
+    } catch (error) {
+      console.error("Error parsing file:", error);
+      toast({
+        title: "Error parsing file",
+        description: `Could not parse the uploaded file. ${error instanceof Error ? error.message : 'Please check the format.'}`,
+        variant: "destructive",
+      });
+      return { data: [], columns: [] };
+    }
+  };
+
+  // Parse Excel data
+  const parseExcelData = async (file: File) => {
+    try {
+      // Read the file as an ArrayBuffer
+      const buffer = await file.arrayBuffer();
+      
+      // Parse workbook
+      const workbook = XLSX.read(buffer, { type: 'array' });
+      
+      // Get first sheet
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      
+      // Convert to JSON with headers
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      
+      if (jsonData.length < 2 || !Array.isArray(jsonData[0])) {
+        throw new Error("Invalid Excel file structure");
+      }
+      
+      // Extract headers and data
+      const headers = (jsonData[0] as any[]).map(header => 
+        String(header).trim()
+      );
+      
+      const data = jsonData.slice(1)
+        .filter(row => row && Array.isArray(row) && row.length > 0)
+        .map((row: any) => {
+          const rowData: Record<string, any> = {};
+          
+          (row as any[]).forEach((cell, index) => {
+            if (index < headers.length) {
+              const header = headers[index];
+              // Try to convert to number if possible
+              const numValue = Number(cell);
+              rowData[header] = isNaN(numValue) ? cell : numValue;
+            }
+          });
+          
+          return rowData;
+        });
+      
+      console.log("Parsed Excel data:", data.slice(0, 2));
+      console.log("Excel columns:", headers);
+      
+      return { data, columns: headers };
+    } catch (error) {
+      console.error("Error parsing Excel:", error);
+      throw new Error(`Excel parsing error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
+  // Parse CSV data
   const parseCSVData = async (file: File) => {
     try {
       const text = await file.text();
@@ -109,21 +192,13 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
           return rowData;
         }).filter(row => Object.values(row).some(value => value !== undefined && value !== ''));
       
-      setParsedData(parsedRows);
-      setDataColumns(headers);
-      
-      console.log("Parsed data:", parsedRows);
-      console.log("Columns:", headers);
+      console.log("Parsed CSV data:", parsedRows.slice(0, 2));
+      console.log("CSV columns:", headers);
       
       return { data: parsedRows, columns: headers };
     } catch (error) {
       console.error("Error parsing CSV data:", error);
-      toast({
-        title: "Error parsing file",
-        description: "Could not parse the uploaded file. Please check the format.",
-        variant: "destructive",
-      });
-      return { data: [], columns: [] };
+      throw new Error(`CSV parsing error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -131,24 +206,36 @@ export function ChatInterface({ uploadedFile }: ChatInterfaceProps) {
   useEffect(() => {
     if (uploadedFile) {
       const processFile = async () => {
-        const { data, columns } = await parseCSVData(uploadedFile);
-        
-        if (data.length > 0) {
-          const columnsList = columns.join(', ');
-          const rowCount = data.length;
+        try {
+          const { data, columns } = await parseFile(uploadedFile);
           
-          const fileMessage: MessageType = {
-            id: `system-${Date.now()}`,
-            sender: "ai",
-            content: `I've analyzed your uploaded file "${uploadedFile.name}" containing ${rowCount} rows of data with the following columns: ${columnsList}. What insights would you like to see from this data?`,
-            timestamp: new Date(),
-          };
-          
-          setMessages(prev => [...prev, fileMessage]);
-        } else {
+          if (data.length > 0) {
+            setParsedData(data);
+            setDataColumns(columns);
+            
+            const columnsList = columns.join(', ');
+            const rowCount = data.length;
+            
+            const fileMessage: MessageType = {
+              id: `system-${Date.now()}`,
+              sender: "ai",
+              content: `I've analyzed your uploaded file "${uploadedFile.name}" containing ${rowCount} rows of data with the following columns: ${columnsList}. What insights would you like to see from this data?`,
+              timestamp: new Date(),
+            };
+            
+            setMessages(prev => [...prev, fileMessage]);
+          } else {
+            toast({
+              title: "No data found",
+              description: "The uploaded file doesn't contain valid data. Please check the format and try again.",
+              variant: "destructive",
+            });
+          }
+        } catch (error) {
+          console.error("Error processing file:", error);
           toast({
-            title: "Invalid data format",
-            description: "The uploaded file doesn't contain valid data. Please check the format and try again.",
+            title: "Error processing file",
+            description: error instanceof Error ? error.message : "Could not process the uploaded file.",
             variant: "destructive",
           });
         }
