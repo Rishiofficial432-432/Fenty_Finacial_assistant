@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { useUser } from "@/context/UserContext";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -48,6 +49,7 @@ const itemVariants = {
 };
 
 export default function Settings() {
+  const { user, updateUser, logout } = useUser();
   const [activeTab, setActiveTab] = useState("profile");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
@@ -55,11 +57,31 @@ export default function Settings() {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [mobileNotifications, setMobileNotifications] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  
+  // Form state for user profile
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [role, setRole] = useState(user?.role || "");
+  const [jobTitle, setJobTitle] = useState("Financial Analyst");
+  const [bio, setBio] = useState("Financial analyst with 8+ years of experience in portfolio management and investment strategies.");
 
   const handleSaveChanges = () => {
+    // Update user profile
+    if (activeTab === "profile") {
+      updateUser({ name, email, role });
+    }
+    
     toast({
       title: "Settings updated",
       description: "Your changes have been successfully saved.",
+    });
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Signed Out",
+      description: "You have been signed out successfully",
     });
   };
 
@@ -107,19 +129,35 @@ export default function Settings() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" defaultValue="Alex Johnson" />
+                    <Input 
+                      id="name" 
+                      value={name} 
+                      onChange={(e) => setName(e.target.value)} 
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" defaultValue="alex.johnson@example.com" />
+                    <Input 
+                      id="email" 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="role">Role</Label>
-                    <Input id="role" defaultValue="Administrator" />
+                    <Input 
+                      id="role" 
+                      value={role} 
+                      onChange={(e) => setRole(e.target.value)} 
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="title">Job Title</Label>
-                    <Input id="title" defaultValue="Financial Analyst" />
+                    <Input 
+                      id="title" 
+                      value={jobTitle} 
+                      onChange={(e) => setJobTitle(e.target.value)} 
+                    />
                   </div>
                 </div>
 
@@ -128,7 +166,8 @@ export default function Settings() {
                   <textarea
                     id="bio"
                     className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background"
-                    defaultValue="Financial analyst with 8+ years of experience in portfolio management and investment strategies."
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
                   />
                 </div>
 

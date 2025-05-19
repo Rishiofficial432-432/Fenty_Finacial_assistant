@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -31,6 +30,7 @@ import {
   BookUser,
   Cog,
   X,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,14 +46,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { useUser } from "@/context/UserContext";
 
-// Define version number and user data
+// Define version number
 const APP_VERSION = "1.3.0";
-const USER = {
-  name: "Alex Johnson",
-  email: "alex.johnson@example.com",
-  role: "Administrator",
-};
 
 // Set the optimal sidebar widths
 const SIDEBAR_EXPANDED_WIDTH = "16rem"; // Reduced from 20rem to 16rem
@@ -67,6 +64,7 @@ const AppLayoutContent = () => {
   const { state } = useSidebar();
   const { toast } = useToast();
   const isCollapsed = state === "collapsed";
+  const { user, logout } = useUser();
 
   // Helper to determine if the route is active
   const isRouteActive = (path: string) => location.pathname === path;
@@ -98,6 +96,23 @@ const AppLayoutContent = () => {
       title: `Navigating to ${label}`,
       description: `Loading ${label} page...`,
     });
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    navigate("/signin");
+  };
+
+  // Get user initials for avatar
+  const getUserInitials = () => {
+    if (!user || !user.name) return "U";
+    return user.name
+      .split(" ")
+      .map(name => name[0])
+      .join("")
+      .toUpperCase()
+      .substring(0, 2);
   };
 
   return (
@@ -251,14 +266,14 @@ const AppLayoutContent = () => {
                   <Button variant="ghost" className={`p-0 h-auto hover:bg-transparent ${isCollapsed ? "w-auto justify-center" : "w-full justify-start flex items-center gap-2"}`}>
                     <Avatar className="h-8 w-8 flex-shrink-0">
                       <AvatarFallback className="bg-purple-500/20 text-purple-200">
-                        AJ
+                        {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
                     {!isCollapsed && (
                       <>
                         <div className="text-left flex-1 overflow-hidden">
-                          <p className="text-xs font-medium truncate text-sidebar-foreground">{USER.name}</p>
-                          <p className="text-xs text-sidebar-foreground/70 truncate">{USER.role}</p>
+                          <p className="text-xs font-medium truncate text-sidebar-foreground">{user?.name || "User"}</p>
+                          <p className="text-xs text-sidebar-foreground/70 truncate">{user?.role || "User"}</p>
                         </div>
                         <ChevronDown className="h-3.5 w-3.5 opacity-50 flex-shrink-0 text-sidebar-foreground" />
                       </>
@@ -279,10 +294,10 @@ const AppLayoutContent = () => {
                     Version {APP_VERSION}
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => toast({
-                    title: "Sign Out",
-                    description: "You have been signed out successfully",
-                  })}>Sign out</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign out
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
