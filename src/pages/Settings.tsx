@@ -69,7 +69,7 @@ export default function Settings() {
   
   // Theme settings
   const [darkModeEnabled, setDarkModeEnabled] = useState(theme === "dark");
-  const [selectedColorTheme, setSelectedColorTheme] = useState(colorTheme);
+  const [selectedColorTheme, setSelectedColorTheme] = useState<"purple" | "blue" | "green" | "amber" | "red">(colorTheme);
 
   // Sync theme state with the actual theme
   useEffect(() => {
@@ -306,7 +306,10 @@ export default function Settings() {
                   
                   <div className="space-y-2">
                     <Label htmlFor="theme">Color Theme</Label>
-                    <Select value={selectedColorTheme} onValueChange={setSelectedColorTheme}>
+                    <Select 
+                      value={selectedColorTheme} 
+                      onValueChange={(value: "purple" | "blue" | "green" | "amber" | "red") => setSelectedColorTheme(value)}
+                    >
                       <SelectTrigger id="theme">
                         <SelectValue placeholder="Select color theme" />
                       </SelectTrigger>
